@@ -1,0 +1,13 @@
+# Cloudflare Pages configuration.
+# Local dev:  npx wrangler pages dev .
+# The D1 binding below also needs to be added in the Pages dashboard
+# (Settings → Functions → D1 database bindings → binding name "DB").
+name = "cj-wedding"
+compatibility_date = "2026-08-11"
+pages_build_output_dir = "."
+
+[[d1_databases]]
+binding = "DB"
+database_name = "cj-wedding-rsvps"
+# Paste the real id here after: npx wrangler d1 create cj-wedding-rsvps
+database_id = "00000000-0000-0000-0000-000000000000"

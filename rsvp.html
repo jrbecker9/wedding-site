@@ -39,6 +39,9 @@
     .choice{flex-direction:column;}
   }
   .error-msg{font-size:13px;color:var(--copper-text);}
+  /* Honeypot: invisible to people, irresistible to bots. */
+  .hp{position:absolute;left:-9999px;top:-9999px;height:1px;width:1px;overflow:hidden;}
+  .submit-btn[disabled]{opacity:0.65;cursor:wait;}
 
   /* Party-size stepper: thumb-sized − / + targets instead of the native
      number-input spinners. */
@@ -141,9 +144,16 @@
             <input id="rsvp-song" name="song" type="text" placeholder="Optional, but taken seriously">
           </label>
 
-          <div id="rsvp-error" class="error-msg is-hidden" role="alert">Please add your name so we know who's coming.</div>
+          <div class="hp" aria-hidden="true">
+            <label>Leave this field empty
+              <input id="rsvp-website" name="website" type="text" tabindex="-1" autocomplete="off">
+            </label>
+          </div>
 
-          <button type="submit" class="submit-btn">COUNT ME IN</button>
+          <div id="rsvp-error" class="error-msg is-hidden" role="alert">Please add your name so we know who's coming.</div>
+          <div id="rsvp-fail" class="error-msg is-hidden" role="alert">Hm — we couldn't reach the trailhead. Give it another try in a minute?</div>
+
+          <button type="submit" class="submit-btn" id="rsvp-submit">COUNT ME IN</button>
         </div>
       </form>
 
@@ -186,6 +196,9 @@
   var partyInput = document.getElementById("rsvp-party");
   var songInput = document.getElementById("rsvp-song");
   var errorEl = document.getElementById("rsvp-error");
+  var failEl = document.getElementById("rsvp-fail");
+  var submitBtn = document.getElementById("rsvp-submit");
+  var websiteInput = document.getElementById("rsvp-website");
   var btnYes = document.getElementById("btn-yes");
   var btnNo = document.getElementById("btn-no");
   var confirmName = document.getElementById("confirm-name");
@@ -219,27 +232,52 @@
     if (nameInput.value.trim()) errorEl.classList.add("is-hidden");
   });
 
+  var sending = false;
   form.addEventListener("submit", function (e) {
     e.preventDefault();
+    if (sending) return;
     var name = nameInput.value.trim();
     if (!name) {
       errorEl.classList.remove("is-hidden");
       nameInput.focus();
       return;
     }
+    failEl.classList.add("is-hidden");
+    sending = true;
+    submitBtn.disabled = true;
+    submitBtn.textContent = "SENDING…";
 
-    // Response, ready to hand off to a real endpoint later:
-    var response = {
-      name: name,
-      attending: attending,
-      party: partyInput.value,
-      song: songInput.value.trim()
-    };
-    void response; // (no-op until a backend is connected)
-
-    confirmName.textContent = name;
-    form.classList.add("is-hidden");
-    confirm.classList.remove("is-hidden");
+    fetch("/api/rsvp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: name,
+        attending: attending,
+        party: parseInt(partyInput.value, 10) || 1,
+        song: songInput.value.trim(),
+        website: websiteInput.value   // honeypot: humans leave this empty
+      })
+    })
+      .then(function (res) { return res.json().catch(function () { return {}; }).then(function (data) { return { res: res, data: data }; }); })
+      .then(function (r) {
+        if (r.res.ok && r.data.ok) {
+          confirmName.textContent = name;
+          form.classList.add("is-hidden");
+          confirm.classList.remove("is-hidden");
+        } else {
+          failEl.textContent = (r.data && r.data.error) ||
+            "Hm — we couldn't reach the trailhead. Give it another try in a minute?";
+          failEl.classList.remove("is-hidden");
+        }
+      })
+      .catch(function () {
+        failEl.classList.remove("is-hidden");
+      })
+      .then(function () {
+        sending = false;
+        submitBtn.disabled = false;
+        submitBtn.textContent = "COUNT ME IN";
+      });
   });
 
   btnReset.addEventListener("click", function () {
