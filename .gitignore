@@ -1,0 +1,12 @@
+# Wrangler local state (local D1 data, caches)
+.wrangler/
+
+# Local secrets for wrangler pages dev — never commit
+.dev.vars
+
+# Node
+node_modules/
+
+# OS junk
+Thumbs.db
+.DS_Store

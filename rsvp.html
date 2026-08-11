@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RSVP · Carlos &amp; Jesse</title>
+<meta name="description" content="Join the early-interest list for Carlos and Jesse's wedding. No date yet — zero commitment, maximum enthusiasm.">
+<meta property="og:title" content="RSVP · Carlos &amp; Jesse">
+<meta property="og:description" content="Tell us you're in — no date required yet.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="img/og.jpg">
+<meta name="theme-color" content="#31424a">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<script>document.documentElement.classList.add('js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Karla:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .rsvp-card{border-radius:4px;padding:32px;background:var(--sand-card);box-shadow:var(--shadow-card);}
+  .form-grid{display:flex;flex-direction:column;gap:20px;}
+  .field{display:flex;flex-direction:column;gap:6px;font-size:13px;letter-spacing:0.06em;color:var(--ink-soft);}
+  .field input{
+    font-family:Karla,sans-serif;font-size:16px;padding:11px 12px;border:1px solid var(--line-input);
+    border-radius:3px;background:#fff;color:var(--ink);width:100%;
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .field input:focus{outline:none;border-color:var(--copper);box-shadow:0 0 0 3px rgba(196,122,61,0.16);}
+  .choice-label{font-size:13px;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:8px;}
+  .choice{display:flex;gap:10px;}
+  .choice button{
+    flex:1;padding:12px;font-family:Karla,sans-serif;font-size:15px;border-radius:3px;cursor:pointer;
+    border:1px solid var(--line-input);background:transparent;color:var(--ink-soft);
+    transition:background .2s ease, color .2s ease, border-color .2s ease, transform .08s ease;
+  }
+  .choice button:active{transform:translateY(1px);}
+  .choice button.selected{border-color:var(--spruce);background:var(--spruce);color:var(--ivory);}
+  @media (max-width:480px){
+    .choice{flex-direction:column;}
+  }
+  .error-msg{font-size:13px;color:var(--copper-text);}
+
+  /* Party-size stepper: thumb-sized − / + targets instead of the native
+     number-input spinners. */
+  .stepper{display:flex;gap:8px;}
+  .stepper button{
+    width:48px;font-size:22px;line-height:1;cursor:pointer;border-radius:3px;
+    border:1px solid var(--line-input);background:#fff;color:var(--ink-soft);
+    transition:border-color .2s ease, color .2s ease, transform .08s ease;
+  }
+  .stepper button:hover{border-color:var(--copper);color:var(--copper-text);}
+  .stepper button:active{transform:translateY(1px);}
+  .stepper input{text-align:center;appearance:textfield;-moz-appearance:textfield;}
+  .stepper input::-webkit-outer-spin-button,
+  .stepper input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+  .submit-btn{
+    padding:14px;font-family:Karla,sans-serif;font-size:15px;font-weight:700;letter-spacing:0.08em;
+    border:none;border-radius:3px;background:var(--spruce);color:var(--ivory);cursor:pointer;
+    transition:background .2s ease, transform .08s ease;
+  }
+  .submit-btn:hover{background:#24333b;}
+  .submit-btn:active{transform:translateY(1px);}
+
+  /* Confirmation */
+  .confirm-card{
+    border-radius:4px;padding:48px 32px;background:var(--sand-card);box-shadow:var(--shadow-card);
+    text-align:center;display:flex;flex-direction:column;align-items:center;gap:18px;
+  }
+  .stamp{
+    width:130px;height:130px;border:2px solid var(--copper);border-radius:50%;
+    display:flex;flex-direction:column;justify-content:center;align-items:center;color:var(--copper);
+    transform:rotate(-8deg);animation:stamp-in .55s cubic-bezier(.2,.9,.3,1.2);
+  }
+  .stamp .st-1{font-size:10px;letter-spacing:0.16em;}
+  .stamp .st-2{font-family:Lora,serif;font-size:26px;font-weight:600;line-height:1.1;}
+  .stamp .st-3{font-size:9px;letter-spacing:0.1em;margin-top:4px;}
+  @keyframes stamp-in{from{opacity:0;transform:rotate(-26deg) scale(.55);}to{opacity:1;transform:rotate(-8deg) scale(1);}}
+  .confirm-title{font-family:Lora,serif;font-size:26px;}
+  .confirm-note{font-size:15px;color:var(--muted-strong);line-height:1.6;max-width:380px;}
+  .link-btn{
+    padding:10px 18px;font-family:Karla,sans-serif;font-size:13px;border:1px solid var(--line-input);
+    border-radius:3px;background:transparent;color:var(--ink-soft);cursor:pointer;transition:border-color .2s ease, color .2s ease;
+  }
+  .link-btn:hover{border-color:var(--copper);color:var(--copper);}
+  .is-hidden{display:none;}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <nav class="site-nav">
+    <a class="brand" href="index.html">C&nbsp;<span class="brand-amp">&amp;</span>&nbsp;J</a>
+    <div class="nav-links">
+      <a href="story.html">Our Story</a>
+      <a href="details.html">Details</a>
+      <a class="active" href="rsvp.html">RSVP</a>
+      <a href="registry.html">Registry</a>
+      <a href="dogs.html">The Dogs</a>
+    </div>
+  </nav>
+
+  <header class="intro tight">
+    <div class="eyebrow">Guest List</div>
+    <h1>RSVP</h1>
+    <div class="subtitle">No date yet — this is the early-interest list. Zero commitment, maximum enthusiasm.</div>
+  </header>
+
+  <svg class="range" viewBox="0 0 1440 160" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 90 C140 60 260 36 400 48 C560 62 640 22 800 36 C960 50 1040 20 1200 34 C1320 44 1390 58 1440 54 L1440 160 L0 160 Z" fill="#a3c4bc" opacity="0.45"></path>
+    <path d="M0 118 C170 92 300 62 460 78 C640 96 740 52 920 72 C1100 92 1220 64 1440 92 L1440 160 L0 160 Z" fill="#5c7268" opacity="0.55"></path>
+    <path d="M0 150 C200 116 380 100 580 120 C780 140 940 100 1140 112 C1290 120 1390 134 1440 130 L1440 160 L0 160 Z" fill="#31424a"></path>
+  </svg>
+
+  <div class="dark dark-center" style="padding:40px 24px 80px;flex:1;">
+    <div class="wrap wrap-560">
+
+      <!-- Form -->
+      <form id="rsvp-form" class="rsvp-card reveal" novalidate>
+        <div class="form-grid">
+          <label class="field" for="rsvp-name">YOUR NAME
+            <input id="rsvp-name" name="name" type="text" placeholder="First and last" autocomplete="name">
+          </label>
+
+          <div>
+            <div class="choice-label">WILL YOU JOIN US?</div>
+            <div class="choice" role="group" aria-label="Will you join us?">
+              <button type="button" id="btn-yes" class="selected" aria-pressed="true">Wouldn't miss it</button>
+              <button type="button" id="btn-no" aria-pressed="false">Depends on the date</button>
+            </div>
+          </div>
+
+          <label class="field" for="rsvp-party">HOW MANY IN YOUR PARTY?
+            <span class="stepper">
+              <button type="button" id="party-minus" aria-label="Fewer people">&minus;</button>
+              <input id="rsvp-party" name="party" type="number" min="1" max="10" value="2" inputmode="numeric">
+              <button type="button" id="party-plus" aria-label="More people">+</button>
+            </span>
+          </label>
+
+          <label class="field" for="rsvp-song">A SONG THAT GETS YOU ON THE DANCE FLOOR
+            <input id="rsvp-song" name="song" type="text" placeholder="Optional, but taken seriously">
+          </label>
+
+          <div id="rsvp-error" class="error-msg is-hidden" role="alert">Please add your name so we know who's coming.</div>
+
+          <button type="submit" class="submit-btn">COUNT ME IN</button>
+        </div>
+      </form>
+
+      <!-- Confirmation -->
+      <div id="rsvp-confirm" class="confirm-card is-hidden">
+        <div class="stamp">
+          <div class="st-1">YOU'RE ON</div>
+          <div class="st-2">THE LIST</div>
+          <div class="st-3">C &amp; J · EST. 2023</div>
+        </div>
+        <div class="confirm-title">You're on the list, <span id="confirm-name"></span>.</div>
+        <div class="confirm-note">We'll come back to you with a real date and place. Until then, sit tight — we're excited too.</div>
+        <button type="button" id="btn-reset" class="link-btn">Sign in another name</button>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <svg class="foot-trail" viewBox="0 0 220 26" aria-hidden="true">
+      <path d="M4 16 C34 8 52 22 84 15 C116 8 138 20 168 14 C182 11 190 12 197 13" fill="none" stroke="#d99a55" stroke-width="2.2" stroke-dasharray="0.4 6.5" stroke-linecap="round"></path>
+      <path d="M209 9.5 c-1.9-2.7 -5.6-1.5 -5.6 1.4 c0 2.3 3.1 4.6 5.6 6.2 c2.5-1.6 5.6-3.9 5.6-6.2 c0-2.9 -3.7-4.1 -5.6-1.4 z" fill="#d99a55"></path>
+    </svg>
+    <div>CARLOS &amp; JESSE · EST. 2023</div>
+  </footer>
+
+</div>
+
+<script src="script.js"></script>
+<script>
+/* RSVP form — front-end only for now.
+   NOTE: nothing is sent anywhere yet. To actually collect responses, wire
+   handleSubmit() to a form service (Formspree / Google Forms / Netlify Forms)
+   or a small backend. The values are gathered below ready to POST. */
+(function () {
+  "use strict";
+  var form = document.getElementById("rsvp-form");
+  var confirm = document.getElementById("rsvp-confirm");
+  var nameInput = document.getElementById("rsvp-name");
+  var partyInput = document.getElementById("rsvp-party");
+  var songInput = document.getElementById("rsvp-song");
+  var errorEl = document.getElementById("rsvp-error");
+  var btnYes = document.getElementById("btn-yes");
+  var btnNo = document.getElementById("btn-no");
+  var confirmName = document.getElementById("confirm-name");
+  var btnReset = document.getElementById("btn-reset");
+
+  var attending = "yes";
+
+  function setAttending(value) {
+    attending = value;
+    var yes = value === "yes";
+    btnYes.classList.toggle("selected", yes);
+    btnNo.classList.toggle("selected", !yes);
+    btnYes.setAttribute("aria-pressed", String(yes));
+    btnNo.setAttribute("aria-pressed", String(!yes));
+  }
+
+  btnYes.addEventListener("click", function () { setAttending("yes"); });
+  btnNo.addEventListener("click", function () { setAttending("no"); });
+
+  // Party-size stepper
+  function nudgeParty(delta) {
+    var v = parseInt(partyInput.value, 10);
+    if (isNaN(v)) v = 2;
+    v = Math.min(10, Math.max(1, v + delta));
+    partyInput.value = String(v);
+  }
+  document.getElementById("party-minus").addEventListener("click", function () { nudgeParty(-1); });
+  document.getElementById("party-plus").addEventListener("click", function () { nudgeParty(1); });
+
+  nameInput.addEventListener("input", function () {
+    if (nameInput.value.trim()) errorEl.classList.add("is-hidden");
+  });
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var name = nameInput.value.trim();
+    if (!name) {
+      errorEl.classList.remove("is-hidden");
+      nameInput.focus();
+      return;
+    }
+
+    // Response, ready to hand off to a real endpoint later:
+    var response = {
+      name: name,
+      attending: attending,
+      party: partyInput.value,
+      song: songInput.value.trim()
+    };
+    void response; // (no-op until a backend is connected)
+
+    confirmName.textContent = name;
+    form.classList.add("is-hidden");
+    confirm.classList.remove("is-hidden");
+  });
+
+  btnReset.addEventListener("click", function () {
+    nameInput.value = "";
+    partyInput.value = "2";
+    songInput.value = "";
+    setAttending("yes");
+    errorEl.classList.add("is-hidden");
+    confirm.classList.add("is-hidden");
+    form.classList.remove("is-hidden");
+    nameInput.focus();
+  });
+})();
+</script>
+</body>
+</html>

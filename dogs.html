@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Dogs · Carlos &amp; Jesse</title>
+<meta name="description" content="Meet Ella (flower girl, self-appointed) and Lily (ring security) — the canine division of the wedding party.">
+<meta property="og:title" content="The Dogs · Carlos &amp; Jesse">
+<meta property="og:description" content="Two staff members with very different job descriptions.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="img/og.jpg">
+<meta name="theme-color" content="#31424a">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<script>document.documentElement.classList.add('js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Karla:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .dog-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  .dog-card{
+    border-radius:4px;background:var(--sand-card);overflow:hidden;box-shadow:var(--shadow-card);
+    transition:transform .3s ease, box-shadow .3s ease;
+  }
+  .dog-card:hover{transform:translateY(-5px);box-shadow:0 18px 40px rgba(20,30,35,0.42);}
+  .dog-photo{width:100%;aspect-ratio:4/3;overflow:hidden;}
+  .dog-photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease;}
+  .dog-card:hover .dog-photo img{transform:scale(1.05);}
+  .dog-info{padding:26px;}
+  .dog-role{font-size:11px;letter-spacing:0.18em;color:var(--copper-text);}
+  .dog-name{font-family:Lora,serif;font-size:26px;margin:8px 0 8px;}
+  .dog-bio{font-size:15px;line-height:1.65;color:var(--ink-soft);}
+  @media (max-width:640px){ .dog-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <nav class="site-nav">
+    <a class="brand" href="index.html">C&nbsp;<span class="brand-amp">&amp;</span>&nbsp;J</a>
+    <div class="nav-links">
+      <a href="story.html">Our Story</a>
+      <a href="details.html">Details</a>
+      <a href="rsvp.html">RSVP</a>
+      <a href="registry.html">Registry</a>
+      <a class="active" href="dogs.html">The Dogs</a>
+    </div>
+  </nav>
+
+  <header class="intro tight">
+    <div class="eyebrow">Wedding Party, Canine Division</div>
+    <h1>The Dogs</h1>
+    <div class="subtitle">Two staff members with very different job descriptions.</div>
+  </header>
+
+  <svg class="range" viewBox="0 0 1440 160" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 90 C140 60 260 36 400 48 C560 62 640 22 800 36 C960 50 1040 20 1200 34 C1320 44 1390 58 1440 54 L1440 160 L0 160 Z" fill="#a3c4bc" opacity="0.45"></path>
+    <path d="M0 118 C170 92 300 62 460 78 C640 96 740 52 920 72 C1100 92 1220 64 1440 92 L1440 160 L0 160 Z" fill="#5c7268" opacity="0.55"></path>
+    <path d="M0 150 C200 116 380 100 580 120 C780 140 940 100 1140 112 C1290 120 1390 134 1440 130 L1440 160 L0 160 Z" fill="#31424a"></path>
+  </svg>
+
+  <div class="dark" style="padding:40px 24px 80px;flex:1;">
+    <div class="wrap wrap-900 dog-grid reveal-stagger">
+      <div class="dog-card">
+        <div class="dog-photo">
+          <img src="img/dog-ella.jpg" alt="Ella at golden hour" width="1600" height="1200" loading="lazy">
+        </div>
+        <div class="dog-info">
+          <div class="dog-role">FLOWER GIRL (SELF-APPOINTED)</div>
+          <div class="dog-name">Ella</div>
+          <div class="dog-bio">German Shepherd. Absolutely obsessed with fetch — sticks only, balls need not apply. Also handles backyard perimeter checks and posing at golden hour like it's a job. Approves of the engagement, mostly because it means more fetch.</div>
+        </div>
+      </div>
+      <div class="dog-card">
+        <div class="dog-photo">
+          <img src="img/dog-lily.jpg" alt="Lily posing in the grass" width="1600" height="2133" loading="lazy">
+        </div>
+        <div class="dog-info">
+          <div class="dog-role">RING SECURITY</div>
+          <div class="dog-name">Lily</div>
+          <div class="dog-bio">The mix. Master of the head tilt and the soulful stare, specializes in supervising backyard stick negotiations. Attendance at the wedding: under review, outlook strong.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <svg class="foot-trail" viewBox="0 0 220 26" aria-hidden="true">
+      <path d="M4 16 C34 8 52 22 84 15 C116 8 138 20 168 14 C182 11 190 12 197 13" fill="none" stroke="#d99a55" stroke-width="2.2" stroke-dasharray="0.4 6.5" stroke-linecap="round"></path>
+      <path d="M209 9.5 c-1.9-2.7 -5.6-1.5 -5.6 1.4 c0 2.3 3.1 4.6 5.6 6.2 c2.5-1.6 5.6-3.9 5.6-6.2 c0-2.9 -3.7-4.1 -5.6-1.4 z" fill="#d99a55"></path>
+      <g fill="#a3c4bc" opacity="0.9">
+        <ellipse cx="58" cy="7" rx="2.1" ry="1.6"/>
+        <circle cx="55.6" cy="4.6" r="0.8"/><circle cx="58" cy="3.9" r="0.8"/><circle cx="60.4" cy="4.6" r="0.8"/>
+        <ellipse cx="130" cy="23" rx="2.1" ry="1.6"/>
+        <circle cx="127.6" cy="20.6" r="0.8"/><circle cx="130" cy="19.9" r="0.8"/><circle cx="132.4" cy="20.6" r="0.8"/>
+      </g>
+    </svg>
+    <div>CARLOS &amp; JESSE · EST. 2023</div>
+  </footer>
+
+</div>
+<script src="script.js"></script>
+</body>
+</html>

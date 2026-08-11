@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carlos &amp; Jesse — We're Getting Married</title>
+<meta name="description" content="Carlos and Jesse are getting married! Date and venue coming soon — get the story, the details, and meet the dogs.">
+<meta property="og:title" content="Carlos &amp; Jesse — We're Getting Married">
+<meta property="og:description" content="Together with their families (and two very good dogs). Date &amp; venue: TBD — check back soon.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="img/og.jpg">
+<meta name="theme-color" content="#31424a">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<script>
+document.documentElement.classList.add('js');
+/* Splash intro: only on the first visit this session, never for
+   reduced-motion users. Decided here, synchronously, so neither the page
+   nor the splash flashes in the wrong order. */
+(function(){
+  try{
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!reduce && !sessionStorage.getItem('cjSplash')) document.documentElement.classList.add('splash');
+  }catch(e){/* privacy modes without sessionStorage: skip the splash */}
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Karla:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* ---- Hero ---- */
+  .hero{position:relative;overflow:hidden;}
+  .hero-range{position:absolute;inset:0;width:100%;height:100%;}
+  .hero-inner{position:relative;text-align:center;padding:96px 24px 176px;}
+  .hero-kicker{font-size:13px;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted-strong);}
+  .hero h1{
+    font-family:Lora,serif;font-weight:500;font-size:clamp(3rem,11vw,76px);
+    margin:24px 0 8px;line-height:1.05;
+  }
+  .hero h1 .amp{color:var(--copper);font-style:italic;}
+  .hero-sub{font-family:Lora,serif;font-style:italic;font-size:clamp(1.1rem,4vw,22px);color:var(--spruce);}
+
+  .hero-meta{display:flex;justify-content:center;align-items:center;gap:28px;margin-top:40px;flex-wrap:wrap;}
+  .badge{
+    width:118px;height:118px;border:2px solid var(--copper);border-radius:50%;
+    display:flex;flex-direction:column;justify-content:center;align-items:center;
+    transform:rotate(-7deg);color:var(--copper);background:#f2eee2;flex-shrink:0;
+    animation:badge-float 5.5s ease-in-out infinite;
+  }
+  .badge .b-est{font-size:10px;letter-spacing:0.18em;}
+  .badge .b-year{font-family:Lora,serif;font-size:30px;font-weight:600;line-height:1;}
+  .badge .b-place{font-size:9px;letter-spacing:0.12em;margin-top:4px;}
+  .hero-date{text-align:left;}
+  .hero-date .d-main{font-family:Lora,serif;font-size:26px;}
+  .hero-date .d-main .tbd{font-style:italic;color:var(--copper-text);}
+  .hero-date .d-note{font-size:13px;color:var(--muted-strong);margin-top:4px;}
+
+  @keyframes badge-float{
+    0%,100%{transform:rotate(-7deg) translateY(0);}
+    50%{transform:rotate(-7deg) translateY(-7px);}
+  }
+
+  /* Hero entrance */
+  .rise{opacity:0;animation:rise-in .9s ease forwards;}
+  .rise.d1{animation-delay:.05s;}
+  .rise.d2{animation-delay:.18s;}
+  .rise.d3{animation-delay:.31s;}
+  .rise.d4{animation-delay:.44s;}
+  @keyframes rise-in{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:none;}}
+
+  /* ---- Photos on the dark band ---- */
+  .home-dark{background:var(--spruce);padding:56px 0 80px;}
+  .photo-row{
+    display:grid;grid-template-columns:1.4fr 1fr;gap:16px;
+    max-width:1100px;margin:0 auto;padding:0 48px;width:100%;position:relative;
+  }
+  .photo-row img{
+    width:100%;height:340px;object-fit:cover;border-radius:4px;
+    box-shadow:var(--shadow-card);display:block;
+  }
+
+  /* ---- Nav cards ---- */
+  .navcards{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+    max-width:1100px;margin:0 auto;padding:56px 48px 0;width:100%;
+  }
+  .navcard{
+    text-decoration:none;border-radius:4px;padding:26px;
+    background:var(--spruce-card);border:1px solid var(--hairline-dark);
+    transition:transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+  }
+  .navcard:hover{transform:translateY(-4px);border-color:var(--copper-light);box-shadow:var(--shadow-card);}
+  .navcard .n-num{font-size:11px;letter-spacing:0.18em;color:var(--copper-bright);}
+  .navcard .n-title{font-family:Lora,serif;font-size:22px;margin:8px 0 6px;color:var(--ivory);display:flex;align-items:center;gap:8px;}
+  .navcard .n-arrow{transition:transform .25s ease;color:var(--copper-bright);}
+  .navcard:hover .n-arrow{transform:translateX(5px);}
+  .navcard .n-body{font-size:14px;color:var(--seaglass);line-height:1.5;}
+
+  /* ---- Splash intro (logo animation) ---- */
+  #splash{display:none;}
+  html.splash{overflow:hidden;}
+  html.splash #splash{
+    /* #eae4d3 = the video's sand as actually rendered (video color-space
+       shifts it one shade from our #eae5d4). Matching it hides the frame
+       edges when the video letterboxes on portrait screens. */
+    display:flex;position:fixed;inset:0;z-index:200;background:#eae4d3;
+    align-items:center;justify-content:center;transition:opacity .45s ease;
+  }
+  #splash.leaving{opacity:0;pointer-events:none;}
+  #splash video{width:100%;height:100%;object-fit:contain;}
+  #splash .skip{
+    position:absolute;right:22px;bottom:18px;padding:8px 10px;cursor:pointer;
+    font-family:Karla,sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;
+    color:var(--muted-strong);background:none;border:none;
+  }
+  #splash .skip:hover{color:var(--copper-text);}
+  /* Hold the hero entrance until the splash clears */
+  html.splash .rise{animation-play-state:paused;}
+
+  /* Two birds gliding in place just above the far ridge — fixed positions
+     chosen well below the text block, so they can never cross the headline. */
+  .bird{animation:bird-glide 16s ease-in-out infinite alternate;}
+  .bird.b2{animation-duration:21s;animation-delay:-7s;}
+  @keyframes bird-glide{
+    from{transform:translate(0,0);}
+    to{transform:translate(30px,-5px);}
+  }
+
+  @media (max-width:820px){
+    .photo-row,.navcards{padding-left:24px;padding-right:24px;}
+    .navcards{grid-template-columns:1fr;}
+  }
+  @media (max-width:640px){
+    /* Pin the mountains to a fixed band at the bottom so the stacked
+       badge + date always sit on clean sand, never on the ridges. */
+    .hero-range{top:auto;height:380px;}
+    .hero-inner{padding:64px 20px 190px;}
+    .hero-date{text-align:center;}
+    .photo-row{grid-template-columns:1fr;}
+    .photo-row img{height:auto;aspect-ratio:4/3;}
+  }
+</style>
+</head>
+<body>
+<div id="splash">
+  <video id="splash-video" muted playsinline preload="auto" src="img/cj-splash.mp4" aria-hidden="true"></video>
+  <button class="skip" id="splash-skip" type="button">Skip intro</button>
+</div>
+<div class="page">
+
+  <nav class="site-nav">
+    <a class="brand" href="index.html">C&nbsp;<span class="brand-amp">&amp;</span>&nbsp;J</a>
+    <div class="nav-links">
+      <a href="story.html">Our Story</a>
+      <a href="details.html">Details</a>
+      <a href="rsvp.html">RSVP</a>
+      <a href="registry.html">Registry</a>
+      <a href="dogs.html">The Dogs</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <svg class="hero-range" viewBox="0 0 1440 520" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <rect width="1440" height="520" fill="#eae5d4"></rect>
+      <path data-depth="0.10" d="M0 400 C140 362 260 330 400 344 C560 360 640 306 800 322 C960 338 1040 300 1200 318 C1320 331 1390 348 1440 344 L1440 520 L0 520 Z" fill="#a3c4bc" opacity="0.45"></path>
+      <g fill="none" stroke="#31424a" stroke-width="1.8" stroke-linecap="round" opacity="0.35">
+        <path class="bird b1" d="M360 372 q5 -6 10 0 q5 -6 10 0"></path>
+        <path class="bird b2" d="M1040 345 q4 -5 8 0 q4 -5 8 0"></path>
+      </g>
+      <path data-depth="0.05" d="M0 452 C170 420 300 384 460 402 C640 422 740 372 920 396 C1100 420 1220 388 1440 420 L1440 520 L0 520 Z" fill="#5c7268" opacity="0.55"></path>
+      <path d="M0 512 C200 470 380 452 580 476 C780 500 940 452 1140 466 C1290 476 1390 492 1440 488 L1440 520 L0 520 Z" fill="#31424a"></path>
+    </svg>
+    <header class="hero-inner">
+      <div class="hero-kicker rise d1">Together with their families — and two very good dogs</div>
+      <h1 class="rise d2">Carlos <span class="amp">&amp;</span> Jesse</h1>
+      <div class="hero-sub rise d3">are getting married</div>
+      <div class="hero-meta rise d4">
+        <div class="badge">
+          <div class="b-est">EST.</div>
+          <div class="b-year">2023</div>
+          <div class="b-place">NEW RIVER GORGE</div>
+        </div>
+        <div class="hero-date">
+          <div class="d-main">Date &amp; venue: <span class="tbd">TBD</span></div>
+          <div class="d-note">We're still deciding on the where and when. Check back soon.</div>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="home-dark">
+    <div class="photo-row reveal-stagger">
+      <img src="img/home-proposal.jpg" alt="The proposal at New River Gorge" width="1600" height="1066" loading="lazy">
+      <img src="img/home-ella-lily.jpg" alt="Ella and Lily in the backyard" width="1600" height="2125" loading="lazy">
+    </div>
+    <div class="navcards reveal-stagger">
+      <a class="navcard" href="story.html">
+        <div class="n-num">01</div>
+        <div class="n-title">Our Story <span class="n-arrow" aria-hidden="true">&rarr;</span></div>
+        <div class="n-body">How we met, and the question asked at New River Gorge.</div>
+      </a>
+      <a class="navcard" href="details.html">
+        <div class="n-num">02</div>
+        <div class="n-title">The Details <span class="n-arrow" aria-hidden="true">&rarr;</span></div>
+        <div class="n-body">Schedule, travel, lodging, and answers to your burning questions.</div>
+      </a>
+      <a class="navcard" href="rsvp.html">
+        <div class="n-num">03</div>
+        <div class="n-title">RSVP <span class="n-arrow" aria-hidden="true">&rarr;</span></div>
+        <div class="n-body">Tell us you're in — no date required yet.</div>
+      </a>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <svg class="foot-trail" viewBox="0 0 220 26" aria-hidden="true">
+      <path d="M4 16 C34 8 52 22 84 15 C116 8 138 20 168 14 C182 11 190 12 197 13" fill="none" stroke="#d99a55" stroke-width="2.2" stroke-dasharray="0.4 6.5" stroke-linecap="round"></path>
+      <path d="M209 9.5 c-1.9-2.7 -5.6-1.5 -5.6 1.4 c0 2.3 3.1 4.6 5.6 6.2 c2.5-1.6 5.6-3.9 5.6-6.2 c0-2.9 -3.7-4.1 -5.6-1.4 z" fill="#d99a55"></path>
+    </svg>
+    <div>CARLOS &amp; JESSE · EST. 2023</div>
+  </footer>
+
+</div>
+<script src="script.js"></script>
+<script>
+/* Splash intro controller. The video fades itself out to plain sand at the
+   end, so dismissal is a quick overlay fade straight into the hero rise-in.
+   Every failure path (autoplay blocked, slow load, decode error) dismisses
+   immediately — the splash can only ever delay the page when it is actually
+   playing. */
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  var splash = document.getElementById("splash");
+  if (!root.classList.contains("splash")) { if (splash) splash.remove(); return; }
+  var video = document.getElementById("splash-video");
+  var done = false;
+  function dismiss() {
+    if (done) return;
+    done = true;
+    try { sessionStorage.setItem("cjSplash", "1"); } catch (e) {}
+    splash.classList.add("leaving");
+    root.classList.remove("splash");   // releases the paused hero entrance
+    setTimeout(function () { splash.remove(); }, 500);
+  }
+  document.getElementById("splash-skip").addEventListener("click", dismiss);
+  splash.addEventListener("click", dismiss);
+  document.addEventListener("keydown", function (e) {
+    if (!done && (e.key === "Escape" || e.key === "Enter" || e.key === " ")) dismiss();
+  });
+  video.addEventListener("ended", dismiss);
+  video.addEventListener("error", dismiss);
+  var p = video.play();
+  if (p && p.catch) p.catch(dismiss);                      // autoplay blocked
+  setTimeout(function () { if (video.currentTime === 0) dismiss(); }, 3000); // never started
+  setTimeout(dismiss, 12000);                              // absolute failsafe
+})();
+</script>
+<script>
+/* Gentle hero parallax: the two back mountain layers drift up a touch as
+   you scroll. Skipped for reduced-motion users. */
+(function () {
+  "use strict";
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var layers = Array.prototype.slice.call(document.querySelectorAll(".hero-range path[data-depth]"));
+  if (!layers.length) return;
+  var hero = document.querySelector(".hero");
+  var ticking = false;
+  function update() {
+    ticking = false;
+    var sy = window.scrollY || 0;
+    if (sy > hero.offsetHeight) return;   // hero off-screen, nothing to do
+    layers.forEach(function (p) {
+      p.style.transform = "translateY(" + (-sy * parseFloat(p.dataset.depth)) + "px)";
+    });
+  }
+  window.addEventListener("scroll", function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+})();
+</script>
+</body>
+</html>

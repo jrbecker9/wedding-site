@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Details · Carlos &amp; Jesse</title>
+<meta name="description" content="Schedule, travel, lodging, and FAQs for Carlos and Jesse's wedding — everything we know so far.">
+<meta property="og:title" content="The Details · Carlos &amp; Jesse">
+<meta property="og:description" content="Everything we know so far — and honest placeholders for the rest.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="img/og.jpg">
+<meta name="theme-color" content="#31424a">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<script>document.documentElement.classList.add('js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Karla:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .sections{display:flex;flex-direction:column;gap:56px;padding-bottom:32px;}
+  .section h2{font-family:Lora,serif;font-weight:500;font-size:30px;margin:0 0 18px;}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .card-note{font-size:15px;line-height:1.65;color:var(--ink-soft);}
+  .placeholder{font-size:13px;color:var(--muted-strong);font-family:monospace;}
+  .stack{display:flex;flex-direction:column;gap:14px;}
+
+  /* FAQ accordion (native <details>) */
+  .faq-head{font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:var(--copper-light);}
+  .faq h2{font-family:Lora,serif;font-weight:500;font-size:30px;margin:10px 0 22px;color:var(--ivory);}
+  .faq-list details{border-bottom:1px solid var(--hairline-dark);padding:18px 0;}
+  .faq-list details:first-of-type{border-top:1px solid var(--hairline-dark);}
+  .faq-list summary{
+    font-family:Lora,serif;font-size:19px;color:var(--ivory);cursor:pointer;
+    list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;
+  }
+  .faq-list summary::-webkit-details-marker{display:none;}
+  .faq-list summary::after{content:"+";color:var(--copper-light);font-size:24px;line-height:1;transition:transform .25s ease;}
+  .faq-list details[open] summary::after{transform:rotate(45deg);}
+  .faq-a{font-size:15px;line-height:1.6;color:var(--seaglass);padding-top:12px;}
+  .faq-a a{color:var(--copper-bright);}
+  .faq-list details[open] .faq-a{animation:faq-open .32s ease;}
+  @keyframes faq-open{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:none;}}
+  /* Smooth height animation where supported (Chromium 131+); elsewhere the
+     answer still fades in via the keyframe above. */
+  @supports (interpolate-size: allow-keywords){
+    :root{interpolate-size:allow-keywords;}
+    .faq-list details::details-content{
+      block-size:0;overflow:clip;
+      transition:block-size .32s ease, content-visibility .32s allow-discrete;
+    }
+    .faq-list details[open]::details-content{block-size:auto;}
+  }
+
+  @media (max-width:640px){
+    .two-col{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <nav class="site-nav">
+    <a class="brand" href="index.html">C&nbsp;<span class="brand-amp">&amp;</span>&nbsp;J</a>
+    <div class="nav-links">
+      <a href="story.html">Our Story</a>
+      <a class="active" href="details.html">Details</a>
+      <a href="rsvp.html">RSVP</a>
+      <a href="registry.html">Registry</a>
+      <a href="dogs.html">The Dogs</a>
+    </div>
+  </nav>
+
+  <header class="intro">
+    <div class="eyebrow">Good To Know</div>
+    <h1>The Details</h1>
+    <div class="subtitle">Everything we know so far — and honest placeholders for the rest.</div>
+  </header>
+
+  <div class="wrap wrap-820 sections">
+    <section class="section reveal">
+      <h2>Schedule</h2>
+      <div class="two-col">
+        <div class="card card-pad">
+          <div class="card-eyebrow">CEREMONY</div>
+          <div class="card-title">Date <span style="font-style:italic;color:var(--copper-text);">TBD</span></div>
+          <div class="card-note">Venue under consideration. Current front-runner: somewhere with a view worth the drive.</div>
+        </div>
+        <div class="card card-pad">
+          <div class="card-eyebrow">RECEPTION</div>
+          <div class="card-title">To follow</div>
+          <div class="card-note">Jesse is in charge of the food. Expect it to be taken very seriously.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <h2>Travel &amp; Lodging</h2>
+      <div class="card card-pad stack">
+        <div class="card-note">Once we pick the venue, this section will fill in with the nearest airport, drive times, and a block of hotel rooms. We'll also share our favorite spots to eat and things to see nearby.</div>
+        <div class="placeholder">[ hotel block · airport info · driving directions — coming with the venue ]</div>
+      </div>
+    </section>
+  </div>
+
+  <svg class="range" viewBox="0 0 1440 160" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 90 C140 60 260 36 400 48 C560 62 640 22 800 36 C960 50 1040 20 1200 34 C1320 44 1390 58 1440 54 L1440 160 L0 160 Z" fill="#a3c4bc" opacity="0.45"></path>
+    <path d="M0 118 C170 92 300 62 460 78 C640 96 740 52 920 72 C1100 92 1220 64 1440 92 L1440 160 L0 160 Z" fill="#5c7268" opacity="0.55"></path>
+    <path d="M0 150 C200 116 380 100 580 120 C780 140 940 100 1140 112 C1290 120 1390 134 1440 130 L1440 160 L0 160 Z" fill="#31424a"></path>
+  </svg>
+
+  <div class="dark" style="padding:56px 24px 80px;">
+    <div class="wrap wrap-820 faq">
+      <div class="faq-head">Around the campfire</div>
+      <h2>FAQ</h2>
+      <div class="faq-list reveal">
+        <details open>
+          <summary>What's the dress code?</summary>
+          <div class="faq-a">TBD — we'll spell it out once we know whether you'll be standing on grass or a dance floor.</div>
+        </details>
+        <details>
+          <summary>Will the dogs be there?</summary>
+          <div class="faq-a">We are doing everything in our power to make that happen. <a href="dogs.html">Meet them here</a> so you can greet them properly.</div>
+        </details>
+        <details>
+          <summary>Will there be food?</summary>
+          <div class="faq-a">One of us plans vacations around restaurants. Yes. There will be food, and it will be good.</div>
+        </details>
+        <details>
+          <summary>Can I bring a plus-one?</summary>
+          <div class="faq-a">Absolutely. RSVP for yourself, your plus-one, and family, and we'll sort the rest.</div>
+        </details>
+        <details>
+          <summary>Why is everything TBD?</summary>
+          <div class="faq-a">Because we just got engaged and we're enjoying it. Planning is officially underway — check back for updates.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <svg class="foot-trail" viewBox="0 0 220 26" aria-hidden="true">
+      <path d="M4 16 C34 8 52 22 84 15 C116 8 138 20 168 14 C182 11 190 12 197 13" fill="none" stroke="#d99a55" stroke-width="2.2" stroke-dasharray="0.4 6.5" stroke-linecap="round"></path>
+      <path d="M209 9.5 c-1.9-2.7 -5.6-1.5 -5.6 1.4 c0 2.3 3.1 4.6 5.6 6.2 c2.5-1.6 5.6-3.9 5.6-6.2 c0-2.9 -3.7-4.1 -5.6-1.4 z" fill="#d99a55"></path>
+    </svg>
+    <div>CARLOS &amp; JESSE · EST. 2023</div>
+  </footer>
+
+</div>
+<script src="script.js"></script>
+</body>
+</html>

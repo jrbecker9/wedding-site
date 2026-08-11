@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Our Story · Carlos &amp; Jesse</title>
+<meta name="description" content="How Carlos and Jesse met, the first date on the Endless Wall Trail, and the proposal two years later on the same hike.">
+<meta property="og:title" content="Our Story · Carlos &amp; Jesse">
+<meta property="og:description" content="From first date to forever — the trail from mile 0 to the wedding.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="img/og.jpg">
+<meta name="theme-color" content="#31424a">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<script>document.documentElement.classList.add('js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Karla:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* Aliases kept so the Story-specific rules below keep reading; the canonical
+     palette + base/nav/intro/footer styles now live in styles.css. */
+  :root{
+    --rust:var(--copper);
+    --rust-light:var(--copper-light);
+    --sage:var(--seaglass);
+    --slate:var(--spruce);
+    --slate-dark:var(--spruce-dark);
+  }
+
+  /* --- Photos --- */
+  .photos{
+    display:grid;grid-template-columns:1fr 1fr;gap:16px;
+    max-width:900px;margin:0 auto 56px;padding:0 24px;width:100%;
+  }
+  .photos img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;border-radius:4px;display:block;}
+
+  /* --- Timeline --- */
+  .timeline{
+    max-width:680px;margin:0 auto;padding:0 24px 24px;width:100%;
+    display:flex;flex-direction:column;
+  }
+  .milestone{display:grid;grid-template-columns:64px 1fr;gap:24px;}
+  .rail{display:flex;flex-direction:column;align-items:center;}
+  .marker{
+    width:52px;height:52px;border-radius:6px;
+    display:flex;flex-direction:column;justify-content:center;align-items:center;
+    background:var(--sand-card);flex-shrink:0;
+  }
+  .marker .marker-label{font-size:8px;letter-spacing:0.12em;}
+  .marker .marker-num{font-family:Lora,serif;font-size:20px;font-weight:600;line-height:1;}
+  .marker--pine{border:2px solid var(--pine);color:var(--pine);}
+  .marker--rust{border:2px solid var(--rust);color:var(--rust);}
+  .marker--future{border:2px dashed var(--sage);color:var(--sage);background:rgba(163,196,188,0.08);}
+
+  .connector{width:2px;flex:1;background:var(--line);}
+  /* Upper trail segment: fills the rail below the Mile 2 marker. Its SVG is
+     drawn to start dead-centre at the top (under the marker) and end dead-centre
+     at the bottom (the seam), and stretches vertically to whatever height the
+     column needs — so it always meets both the marker and the lower segment on
+     the spine, at any text height. */
+  .connector--trail{width:64px;flex:1;}
+  /* Shared trail path: centre-to-centre with vertical tangents at both ends, so
+     segments join seamlessly and land on the markers. non-scaling-stroke keeps
+     the dashes a constant size even where the path is stretched. */
+  .trail-svg{display:block;width:100%;height:100%;}
+  .trail-svg path{
+    fill:none;stroke:var(--copper);stroke-width:2.6;
+    stroke-dasharray:5 6;stroke-linecap:round;vector-effect:non-scaling-stroke;
+  }
+
+  .milestone-body{padding-bottom:44px;}
+  .milestone-body.last{padding-bottom:24px;}
+  .when{font-size:12px;letter-spacing:0.16em;color:var(--copper-text);}
+  .headline{font-family:Lora,serif;font-size:24px;margin:6px 0 8px;line-height:1.25;}
+  .body-text{font-size:15px;line-height:1.65;color:var(--ink-soft);}
+
+  /* --- Finale (dark) --- */
+  .finale-wrap{position:relative;}
+  /* Lower half of the trail: picks up where the Mile 2 connector leaves off
+     (top:-24px bridges the timeline's bottom padding) and winds over the ridge
+     to the "?" marker. Anchored to the same 24px-inset marker column, and the
+     mountains + finale top-padding it spans are a fixed 176px, so its height is
+     stable on every screen size. */
+  .trail-layer{
+    position:absolute;top:-24px;left:0;right:0;margin:0 auto;
+    max-width:680px;padding:0 24px;z-index:1;pointer-events:none;
+  }
+  .trail{width:64px;height:199px;}
+  .finale{background:var(--slate);padding:56px 0 80px;}
+  .finale-inner{max-width:680px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:64px 1fr;gap:24px;}
+  .finale .when{color:var(--copper-bright);}
+  .finale .headline{color:var(--ivory);}
+  .finale .body-text{color:var(--sage);}
+  .finale .body-text a{color:var(--copper-bright);}
+
+  /* --- Mobile --- */
+  @media (max-width:640px){
+    .photos{grid-template-columns:1fr;margin-bottom:40px;}
+  }
+
+  /* --- Trail draw-on ---
+     The dashed trail is masked by a copy of its own path (pathLength=1).
+     With JS present the mask starts fully offset (trail hidden) and
+     transitions to 0 when the trail scrolls into view, so the route
+     "draws itself" toward the wedding. No JS → trail simply visible. */
+  html.js .trail-svg .mask-path{stroke-dashoffset:1;}
+  html.js .trail-svg.trail-go .mask-path{stroke-dashoffset:0;}
+  .connector--trail .mask-path{transition:stroke-dashoffset 1.15s ease-in;}
+  .trail .mask-path{transition:stroke-dashoffset .95s ease-out 1.05s;}
+  @media (prefers-reduced-motion: reduce){
+    html.js .trail-svg .mask-path{stroke-dashoffset:0;transition:none;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <nav class="site-nav">
+    <a class="brand" href="index.html">C&nbsp;<span class="brand-amp">&amp;</span>&nbsp;J</a>
+    <div class="nav-links">
+      <a class="active" href="story.html">Our Story</a>
+      <a href="details.html">Details</a>
+      <a href="rsvp.html">RSVP</a>
+      <a href="registry.html">Registry</a>
+      <a href="dogs.html">The Dogs</a>
+    </div>
+  </nav>
+
+  <header class="intro">
+    <div class="eyebrow">The Story So Far</div>
+    <h1>Our Story</h1>
+    <div class="subtitle">From first date to forever.</div>
+  </header>
+
+  <div class="photos">
+    <img src="img/story-hug.jpg" alt="The hug right after the yes" width="1600" height="1066">
+    <img src="img/story-hands.jpg" alt="Holding hands above the gorge" width="1600" height="1067">
+  </div>
+
+  <div class="timeline">
+
+    <div class="milestone">
+      <div class="rail">
+        <div class="marker marker--pine">
+          <div class="marker-label">MILE</div>
+          <div class="marker-num">0</div>
+        </div>
+        <div class="connector"></div>
+      </div>
+      <div class="milestone-body">
+        <div class="when">2023 · WE MEET</div>
+        <div class="headline">A New Englander and a West Virginian walk into each other's lives</div>
+        <div class="body-text">Jesse, a New England transplant who will hike to any body of water and talk about food the whole way there. Carlos, a West Virginia native who can walk for miles and still has the energy to argue about which horror movie is the best one. It worked immediately.</div>
+      </div>
+    </div>
+
+    <div class="milestone">
+      <div class="rail">
+        <div class="marker marker--pine">
+          <div class="marker-label">MILE</div>
+          <div class="marker-num">1</div>
+        </div>
+        <div class="connector"></div>
+      </div>
+      <div class="milestone-body">
+        <div class="when">2023 · FIRST DATE · ENDLESS WALL TRAIL</div>
+        <div class="headline">Carlos shows off West Virginia</div>
+        <div class="body-text">The first time Jesse drove down to West Virginia, Carlos played tour guide — and saved the best for the Endless Wall Trail at New River Gorge. If you've been, you know: cliff edges, long views, and plenty of time to find out whether the other person is worth keeping pace with. He was.</div>
+      </div>
+    </div>
+
+    <div class="milestone">
+      <div class="rail">
+        <div class="marker marker--rust">
+          <div class="marker-label">MILE</div>
+          <div class="marker-num">2</div>
+        </div>
+        <div class="connector--trail">
+          <svg class="trail-svg" viewBox="0 0 64 199" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <mask id="trail-mask-a" maskUnits="userSpaceOnUse">
+                <path class="mask-path" d="M32 0 C32 15 45 27 44 50 C43 70 33 81 32 100 C31 118 21 129 21 149 C21 170 32 184 32 199" pathLength="1" fill="none" stroke="#fff" stroke-width="12" stroke-dasharray="1 1"></path>
+              </mask>
+            </defs>
+            <path mask="url(#trail-mask-a)" d="M32 0 C32 15 45 27 44 50 C43 70 33 81 32 100 C31 118 21 129 21 149 C21 170 32 184 32 199"></path>
+          </svg>
+        </div>
+      </div>
+      <div class="milestone-body last">
+        <div class="when">2025 · THE PROPOSAL · SAME TRAIL</div>
+        <div class="headline">Back to the Endless Wall — this time with a ring</div>
+        <div class="body-text">Two years later, Carlos surprised Jesse with a cabin trip back to the New River Gorge. Surprise number two came on the same hike where it all started: Carlos asked a better question, and Jesse said yes to that too. The dogs were not consulted but have since approved.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="finale-wrap">
+    <svg class="range" viewBox="0 0 1440 160" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 90 C140 60 260 36 400 48 C560 62 640 22 800 36 C960 50 1040 20 1200 34 C1320 44 1390 58 1440 54 L1440 160 L0 160 Z" fill="#a3c4bc" opacity="0.45"></path>
+      <path d="M0 118 C170 92 300 62 460 78 C640 96 740 52 920 72 C1100 92 1220 64 1440 92 L1440 160 L0 160 Z" fill="#5c7268" opacity="0.55"></path>
+      <path d="M0 150 C200 116 380 100 580 120 C780 140 940 100 1140 112 C1290 120 1390 134 1440 130 L1440 160 L0 160 Z" fill="#31424a"></path>
+    </svg>
+    <div class="trail-layer" aria-hidden="true">
+      <div class="trail">
+        <svg class="trail-svg" viewBox="0 0 64 199" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <mask id="trail-mask-b" maskUnits="userSpaceOnUse">
+              <path class="mask-path" d="M32 0 C32 15 45 27 44 50 C43 70 33 81 32 100 C31 118 21 129 21 149 C21 170 32 184 32 199" pathLength="1" fill="none" stroke="#fff" stroke-width="12" stroke-dasharray="1 1"></path>
+            </mask>
+          </defs>
+          <path mask="url(#trail-mask-b)" d="M32 0 C32 15 45 27 44 50 C43 70 33 81 32 100 C31 118 21 129 21 149 C21 170 32 184 32 199"></path>
+        </svg>
+      </div>
+    </div>
+    <div class="finale">
+      <div class="finale-inner">
+        <div class="rail">
+          <div class="marker marker--future">
+            <div class="marker-label">MILE</div>
+            <div class="marker-num">?</div>
+          </div>
+        </div>
+        <div>
+          <div class="when">NEXT · THE WEDDING · JUST OVER THE RIDGE</div>
+          <div class="headline">Location scouting in progress</div>
+          <div class="body-text">Date and venue are still TBD. When we know, you'll know — <a href="details.html">the Details page</a> will be the first to hear.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <svg class="foot-trail" viewBox="0 0 220 26" aria-hidden="true">
+      <path d="M4 16 C34 8 52 22 84 15 C116 8 138 20 168 14 C182 11 190 12 197 13" fill="none" stroke="#d99a55" stroke-width="2.2" stroke-dasharray="0.4 6.5" stroke-linecap="round"></path>
+      <path d="M209 9.5 c-1.9-2.7 -5.6-1.5 -5.6 1.4 c0 2.3 3.1 4.6 5.6 6.2 c2.5-1.6 5.6-3.9 5.6-6.2 c0-2.9 -3.7-4.1 -5.6-1.4 z" fill="#d99a55"></path>
+    </svg>
+    <div>CARLOS &amp; JESSE · EST. 2023</div>
+  </footer>
+
+</div>
+<script src="script.js"></script>
+<script>
+/* Draw the treasure trail when it scrolls into view. */
+(function () {
+  "use strict";
+  var svgs = Array.prototype.slice.call(document.querySelectorAll(".trail-svg"));
+  var triggers = [
+    document.querySelector(".connector--trail"),
+    document.querySelector(".trail-layer")
+  ].filter(Boolean);
+  if (!svgs.length || !triggers.length || !("IntersectionObserver" in window)) {
+    svgs.forEach(function (s) { s.classList.add("trail-go"); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    if (entries.some(function (e) { return e.isIntersecting; })) {
+      svgs.forEach(function (s) { s.classList.add("trail-go"); });
+      io.disconnect();
+    }
+  }, { threshold: 0.15 });
+  triggers.forEach(function (t) { io.observe(t); });
+})();
+</script>
+</body>
+</html>
