@@ -149,6 +149,46 @@ a:hover{color:var(--copper);}
 }
 .foot-trail{display:block;width:220px;height:26px;margin:0 auto 10px;}
 
+/* ---- Footer email-updates signup ----
+   Lives inside the dark spruce footer. Email input + button on one row,
+   stacking on narrow screens. Light-on-dark to sit on --spruce-dark. */
+.footer-signup{max-width:440px;margin:0 auto 22px;}
+.footer-signup .fs-label{
+  font-family:Lora,serif;font-size:15px;letter-spacing:0.02em;
+  color:var(--ivory);margin-bottom:10px;text-transform:none;
+}
+.footer-signup .fs-row{display:flex;gap:8px;}
+.footer-signup input[type="email"]{
+  flex:1;min-width:0;font-family:Karla,sans-serif;font-size:15px;letter-spacing:normal;
+  padding:11px 12px;border-radius:3px;color:var(--ivory);
+  border:1px solid rgba(163,196,188,0.35);background:rgba(255,255,255,0.06);
+  transition:border-color .2s ease, box-shadow .2s ease;
+}
+.footer-signup input[type="email"]::placeholder{color:rgba(239,233,218,0.5);}
+.footer-signup input[type="email"]:focus{
+  outline:none;border-color:var(--copper);box-shadow:0 0 0 3px rgba(196,122,61,0.22);
+}
+.footer-signup .fs-submit{
+  flex:none;padding:11px 18px;font-family:Karla,sans-serif;font-size:13px;font-weight:700;
+  letter-spacing:0.08em;border:none;border-radius:3px;cursor:pointer;
+  background:var(--copper);color:var(--ivory);
+  transition:background .2s ease, transform .08s ease;
+}
+.footer-signup .fs-submit:hover{background:var(--copper-light);}
+.footer-signup .fs-submit:active{transform:translateY(1px);}
+.footer-signup .fs-submit[disabled]{opacity:0.65;cursor:wait;}
+.footer-signup .fs-msg{
+  min-height:1em;margin-top:9px;font-size:13px;letter-spacing:0.02em;text-align:center;
+}
+.footer-signup .fs-msg.fs-error{color:var(--copper-light);}
+.footer-signup .fs-msg.fs-ok{color:var(--seaglass);}
+@media (max-width:420px){
+  .footer-signup .fs-row{flex-direction:column;}
+}
+/* Honeypot: invisible to people, irresistible to bots. */
+.footer-signup .hp{position:absolute;left:-9999px;top:-9999px;height:1px;width:1px;overflow:hidden;}
+.footer-signup .is-hidden{display:none;}
+
 /* ---- Scroll-reveal ----
    Hidden states only apply when JS has stamped <html class="js">, so a
    no-JS visitor sees everything immediately instead of blank sections. */

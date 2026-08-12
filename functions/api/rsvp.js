@@ -38,7 +38,7 @@ export async function onRequestPost({ request, env }) {
   const song = typeof body.song === "string" ? body.song.trim().slice(0, 200) : "";
 
   if (!name) return bad("Please add your name so we know who's coming.");
-  if (name.length > 120) return bad("That's a very long name — 120 characters max.");
+  if (name.length > 120) return bad("That's a very long name. 120 characters max.");
   if (attending === null) return bad("Please pick an attendance option.");
   if (!Number.isInteger(party) || party < 1 || party > 10) {
     return bad("Party size should be between 1 and 10.");
@@ -65,7 +65,7 @@ export async function onRequestPost({ request, env }) {
     }
   } catch (e) {
     console.error("rsvp insert failed:", e);
-    return bad("Something went sideways on our end — please try again.", 500);
+    return bad("Something went sideways on our end. Please try again.", 500);
   }
 
   return Response.json({ ok: true });

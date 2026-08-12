@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RSVP · Carlos &amp; Jesse</title>
-<meta name="description" content="Join the early-interest list for Carlos and Jesse's wedding. No date yet — zero commitment, maximum enthusiasm.">
+<meta name="description" content="Join the early-interest list for Carlos and Jesse's wedding. No date yet, and nothing to commit to.">
 <meta property="og:title" content="RSVP · Carlos &amp; Jesse">
-<meta property="og:description" content="Tell us you're in — no date required yet.">
+<meta property="og:description" content="Tell us you're in. No date required yet.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://wedding-site-az4.pages.dev/img/og.jpg">
 <meta name="theme-color" content="#31424a">
@@ -105,7 +105,7 @@
   <header class="intro tight">
     <div class="eyebrow">Guest List</div>
     <h1>RSVP</h1>
-    <div class="subtitle">No date yet — this is the early-interest list. Zero commitment, maximum enthusiasm.</div>
+    <div class="subtitle">No date yet. This is just the early-interest list, so there's nothing to commit to.</div>
   </header>
 
   <svg class="range" viewBox="0 0 1440 160" preserveAspectRatio="none" aria-hidden="true">
@@ -151,7 +151,7 @@
           </div>
 
           <div id="rsvp-error" class="error-msg is-hidden" role="alert">Please add your name so we know who's coming.</div>
-          <div id="rsvp-fail" class="error-msg is-hidden" role="alert">Hm — we couldn't reach the trailhead. Give it another try in a minute?</div>
+          <div id="rsvp-fail" class="error-msg is-hidden" role="alert">Hm, we couldn't reach the trailhead. Give it another try in a minute?</div>
 
           <button type="submit" class="submit-btn" id="rsvp-submit">COUNT ME IN</button>
         </div>
@@ -165,7 +165,7 @@
           <div class="st-3">C &amp; J · EST. 2023</div>
         </div>
         <div class="confirm-title">You're on the list, <span id="confirm-name"></span>.</div>
-        <div class="confirm-note">We'll come back to you with a real date and place. Until then, sit tight — we're excited too.</div>
+        <div class="confirm-note">We'll come back to you with a real date and place. Until then, sit tight. We're excited too.</div>
         <button type="button" id="btn-reset" class="link-btn">Sign in another name</button>
       </div>
 
@@ -173,6 +173,19 @@
   </div>
 
   <footer class="site-footer">
+    <form id="subscribe-form" class="footer-signup" novalidate>
+      <div class="fs-label">Stay in the loop. We'll email when we have a date.</div>
+      <div class="fs-row">
+        <input type="email" name="email" aria-label="Email address" placeholder="you@example.com" autocomplete="email">
+        <button type="submit" class="fs-submit">Keep me posted</button>
+      </div>
+      <div class="hp" aria-hidden="true">
+        <label>Leave this field empty
+          <input name="website" type="text" tabindex="-1" autocomplete="off">
+        </label>
+      </div>
+      <div class="fs-msg" role="status" aria-live="polite"></div>
+    </form>
     <svg class="foot-trail" viewBox="0 0 220 26" aria-hidden="true">
       <path d="M4 16 C34 8 52 22 84 15 C116 8 138 20 168 14 C182 11 190 12 197 13" fill="none" stroke="#d99a55" stroke-width="2.2" stroke-dasharray="0.4 6.5" stroke-linecap="round"></path>
       <path d="M209 9.5 c-1.9-2.7 -5.6-1.5 -5.6 1.4 c0 2.3 3.1 4.6 5.6 6.2 c2.5-1.6 5.6-3.9 5.6-6.2 c0-2.9 -3.7-4.1 -5.6-1.4 z" fill="#d99a55"></path>
@@ -266,7 +279,7 @@
           confirm.classList.remove("is-hidden");
         } else {
           failEl.textContent = (r.data && r.data.error) ||
-            "Hm — we couldn't reach the trailhead. Give it another try in a minute?";
+            "Hm, we couldn't reach the trailhead. Give it another try in a minute?";
           failEl.classList.remove("is-hidden");
         }
       })

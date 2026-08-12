@@ -9,3 +9,11 @@ CREATE TABLE IF NOT EXISTS rsvps (
   party      INTEGER NOT NULL,   -- 1..10
   song       TEXT                -- optional dance-floor request
 );
+
+-- Email updates list (footer signup). Also auto-created by the API on first use.
+-- email is UNIQUE so repeat signups are idempotent (INSERT OR IGNORE).
+CREATE TABLE IF NOT EXISTS subscribers (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  created_at TEXT    NOT NULL,
+  email      TEXT    NOT NULL UNIQUE
+);
