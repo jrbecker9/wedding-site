@@ -26,6 +26,12 @@
     transition:border-color .2s ease, box-shadow .2s ease;
   }
   .field input:focus{outline:none;border-color:var(--copper);box-shadow:0 0 0 3px rgba(196,122,61,0.16);}
+  .field textarea{
+    font-family:Karla,sans-serif;font-size:16px;padding:11px 12px;border:1px solid var(--line-input);
+    border-radius:3px;background:#fff;color:var(--ink);width:100%;resize:vertical;min-height:64px;
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .field textarea:focus{outline:none;border-color:var(--copper);box-shadow:0 0 0 3px rgba(196,122,61,0.16);}
   .choice-label{font-size:13px;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:8px;}
   .choice{display:flex;gap:10px;}
   .choice button{
@@ -126,8 +132,12 @@
             <input id="rsvp-name" name="name" type="text" placeholder="First and last" autocomplete="name">
           </label>
 
-          <label class="field" for="rsvp-email"><span>WHERE CAN WE REACH YOU? <span class="optional">(OPTIONAL)</span></span>
+          <label class="field" for="rsvp-email"><span>YOUR EMAIL <span class="optional">(OPTIONAL)</span></span>
             <input id="rsvp-email" name="email" type="email" placeholder="So the save-the-date can find you" autocomplete="email">
+          </label>
+
+          <label class="field" for="rsvp-address"><span>YOUR MAILING ADDRESS <span class="optional">(OPTIONAL)</span></span>
+            <textarea id="rsvp-address" name="address" rows="3" placeholder="Street, city, state, zip &mdash; for the paper invitation, when it exists" autocomplete="street-address"></textarea>
           </label>
 
           <div>
@@ -215,6 +225,7 @@
   var confirm = document.getElementById("rsvp-confirm");
   var nameInput = document.getElementById("rsvp-name");
   var emailInput = document.getElementById("rsvp-email");
+  var addressInput = document.getElementById("rsvp-address");
   var emailErrorEl = document.getElementById("rsvp-email-error");
   var EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
   var partyInput = document.getElementById("rsvp-party");
@@ -287,6 +298,7 @@
       body: JSON.stringify({
         name: name,
         email: email,
+        address: addressInput.value.trim(),
         attending: attending,
         party: parseInt(partyInput.value, 10) || 1,
         song: songInput.value.trim(),
@@ -331,6 +343,7 @@
   btnReset.addEventListener("click", function () {
     nameInput.value = "";
     emailInput.value = "";
+    addressInput.value = "";
     partyInput.value = "2";
     songInput.value = "";
     setAttending("yes");

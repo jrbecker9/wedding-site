@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS rsvps (
   attending  TEXT    NOT NULL,   -- 'yes' (wouldn't miss it) | 'no' (depends on the date)
   party      INTEGER NOT NULL,   -- 1..10
   song       TEXT,               -- optional dance-floor request
-  email      TEXT                -- optional contact (API lazily ALTERs older tables)
+  email      TEXT,               -- optional contact (API lazily ALTERs older tables)
+  address    TEXT                -- optional mailing address for paper invites
 );
 
 -- Shared "boop the nose" counter for the Dogs page. Auto-created on first boop.

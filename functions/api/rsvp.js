@@ -1,7 +1,7 @@
 /**
  * POST /api/rsvp — store an early-interest RSVP in D1.
  *
- * Body (JSON): { name, email?, attending: 'yes'|'no', party: 1..10, song?, website? }
+ * Body (JSON): { name, email?, address?, attending: 'yes'|'no', party: 1..10, song?, website? }
  * `website` is a honeypot: humans never see the field, bots fill it in.
  * We answer bots with a cheerful fake success and store nothing.
  */
@@ -13,7 +13,8 @@ const CREATE_SQL = `CREATE TABLE IF NOT EXISTS rsvps (
   attending  TEXT    NOT NULL,
   party      INTEGER NOT NULL,
   song       TEXT,
-  email      TEXT
+  email      TEXT,
+  address    TEXT
 )`;
 
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
@@ -37,6 +38,7 @@ export async function onRequestPost({ request, env }) {
 
   const name = typeof body.name === "string" ? body.name.trim() : "";
   const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
+  const address = typeof body.address === "string" ? body.address.trim().slice(0, 500) : "";
   const attending = body.attending === "no" ? "no" : body.attending === "yes" ? "yes" : null;
   const party = Number.parseInt(body.party, 10);
   const song = typeof body.song === "string" ? body.song.trim().slice(0, 200) : "";
@@ -53,9 +55,9 @@ export async function onRequestPost({ request, env }) {
 
   const insert = () =>
     env.DB.prepare(
-      "INSERT INTO rsvps (created_at, name, attending, party, song, email) VALUES (?, ?, ?, ?, ?, ?)"
+      "INSERT INTO rsvps (created_at, name, attending, party, song, email, address) VALUES (?, ?, ?, ?, ?, ?, ?)"
     )
-      .bind(new Date().toISOString(), name, attending, party, song, email)
+      .bind(new Date().toISOString(), name, attending, party, song, email, address)
       .run();
 
   try {
@@ -66,9 +68,15 @@ export async function onRequestPost({ request, env }) {
       if (String(e).includes("no such table")) {
         await env.DB.exec(CREATE_SQL.replace(/\n\s*/g, " "));
         await insert();
-      } else if (/no column named email|has no column/i.test(String(e))) {
-        // Table predates the email field: add the column, then retry once.
-        await env.DB.exec("ALTER TABLE rsvps ADD COLUMN email TEXT");
+      } else if (/no column named|has no column/i.test(String(e))) {
+        // Table predates the optional contact fields: add them, then retry.
+        for (const col of ["email", "address"]) {
+          try {
+            await env.DB.exec(`ALTER TABLE rsvps ADD COLUMN ${col} TEXT`);
+          } catch (dup) {
+            if (!/duplicate column/i.test(String(dup))) throw dup;
+          }
+        }
         await insert();
       } else {
         throw e;
