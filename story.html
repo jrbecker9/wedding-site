@@ -52,7 +52,6 @@
   .marker--rust{border:2px solid var(--rust);color:var(--rust);}
   .marker--future{border:2px dashed var(--sage);color:var(--sage);background:rgba(163,196,188,0.08);}
 
-  .connector{width:2px;flex:1;background:var(--line);}
   /* Upper trail segment: fills the rail below the Mile 2 marker. Its SVG is
      drawn to start dead-centre at the top (under the marker) and end dead-centre
      at the bottom (the seam), and stretches vertically to whatever height the
@@ -145,7 +144,16 @@
           <div class="marker-label">MILE</div>
           <div class="marker-num">0</div>
         </div>
-        <div class="connector"></div>
+        <div class="connector--trail">
+          <svg class="trail-svg" data-trail="m0" viewBox="0 0 64 160" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <mask id="trail-mask-0" maskUnits="userSpaceOnUse">
+                <path class="mask-path" d="M32 0 C32 22 20 38 21 66 C22 94 42 106 42 130 C42 148 32 152 32 160" pathLength="1" fill="none" stroke="#fff" stroke-width="12" stroke-dasharray="1 1"></path>
+              </mask>
+            </defs>
+            <path mask="url(#trail-mask-0)" d="M32 0 C32 22 20 38 21 66 C22 94 42 106 42 130 C42 148 32 152 32 160"></path>
+          </svg>
+        </div>
       </div>
       <div class="milestone-body">
         <div class="when">2023 · WE MEET</div>
@@ -160,7 +168,16 @@
           <div class="marker-label">MILE</div>
           <div class="marker-num">1</div>
         </div>
-        <div class="connector"></div>
+        <div class="connector--trail">
+          <svg class="trail-svg" data-trail="m1" viewBox="0 0 64 160" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <mask id="trail-mask-1" maskUnits="userSpaceOnUse">
+                <path class="mask-path" d="M32 0 C32 22 44 38 43 66 C42 94 22 106 22 130 C22 148 32 152 32 160" pathLength="1" fill="none" stroke="#fff" stroke-width="12" stroke-dasharray="1 1"></path>
+              </mask>
+            </defs>
+            <path mask="url(#trail-mask-1)" d="M32 0 C32 22 44 38 43 66 C42 94 22 106 22 130 C22 148 32 152 32 160"></path>
+          </svg>
+        </div>
       </div>
       <div class="milestone-body">
         <div class="when">2023 · FIRST DATE · ENDLESS WALL TRAIL</div>
@@ -176,7 +193,7 @@
           <div class="marker-num">2</div>
         </div>
         <div class="connector--trail">
-          <svg class="trail-svg" viewBox="0 0 64 199" preserveAspectRatio="none" aria-hidden="true">
+          <svg class="trail-svg" data-trail="m2" viewBox="0 0 64 199" preserveAspectRatio="none" aria-hidden="true">
             <defs>
               <mask id="trail-mask-a" maskUnits="userSpaceOnUse">
                 <path class="mask-path" d="M32 0 C32 15 45 27 44 50 C43 70 33 81 32 100 C31 118 21 129 21 149 C21 170 32 184 32 199" pathLength="1" fill="none" stroke="#fff" stroke-width="12" stroke-dasharray="1 1"></path>
@@ -203,7 +220,7 @@
     </svg>
     <div class="trail-layer" aria-hidden="true">
       <div class="trail">
-        <svg class="trail-svg" viewBox="0 0 64 199" preserveAspectRatio="none" aria-hidden="true">
+        <svg class="trail-svg" data-trail="m2" viewBox="0 0 64 199" preserveAspectRatio="none" aria-hidden="true">
           <defs>
             <mask id="trail-mask-b" maskUnits="userSpaceOnUse">
               <path class="mask-path" d="M32 0 C32 15 45 27 44 50 C43 70 33 81 32 100 C31 118 21 129 21 149 C21 170 32 184 32 199" pathLength="1" fill="none" stroke="#fff" stroke-width="12" stroke-dasharray="1 1"></path>
@@ -254,25 +271,42 @@
 </div>
 <script src="script.js"></script>
 <script>
-/* Draw the treasure trail when it scrolls into view. */
+/* Draw the treasure trail segment by segment as each scrolls into view.
+   Segments sharing a data-trail value fire together (the mile-2 connector
+   and the over-the-ridge run are one continuous stretch — the second svg's
+   transition delay chains it after the first). */
 (function () {
   "use strict";
   var svgs = Array.prototype.slice.call(document.querySelectorAll(".trail-svg"));
-  var triggers = [
-    document.querySelector(".connector--trail"),
-    document.querySelector(".trail-layer")
-  ].filter(Boolean);
-  if (!svgs.length || !triggers.length || !("IntersectionObserver" in window)) {
+  if (!svgs.length) return;
+
+  var groups = {};
+  svgs.forEach(function (s) {
+    var g = s.getAttribute("data-trail") || "solo";
+    (groups[g] = groups[g] || []).push(s);
+  });
+
+  if (!("IntersectionObserver" in window)) {
     svgs.forEach(function (s) { s.classList.add("trail-go"); });
     return;
   }
+
+  var byTrigger = new Map();
   var io = new IntersectionObserver(function (entries) {
-    if (entries.some(function (e) { return e.isIntersecting; })) {
-      svgs.forEach(function (s) { s.classList.add("trail-go"); });
-      io.disconnect();
-    }
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      var g = byTrigger.get(e.target);
+      if (g) groups[g].forEach(function (s) { s.classList.add("trail-go"); });
+      io.unobserve(e.target);
+    });
   }, { threshold: 0.15 });
-  triggers.forEach(function (t) { io.observe(t); });
+
+  Object.keys(groups).forEach(function (g) {
+    groups[g].forEach(function (s) {
+      byTrigger.set(s.parentNode, g);
+      io.observe(s.parentNode);
+    });
+  });
 })();
 </script>
 </body>
