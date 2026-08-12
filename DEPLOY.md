@@ -23,12 +23,14 @@ and export RSVPs in a Cloudflare D1 (SQLite) database.
 
    Paste the database id it gives you into `wrangler.toml` (`database_id`).
 
-4. **Bind D1 to the Pages project**: Pages project → *Settings* → *Functions* →
-   *D1 database bindings* → Add: variable name `DB`, database `cj-wedding-rsvps`.
+4. **Binding is automatic** — Pages reads the D1 binding from `wrangler.toml`,
+   so no dashboard binding step is needed. (If the deploy fails with
+   "Invalid database UUID", the placeholder id in `wrangler.toml` hasn't been
+   replaced yet — that's step 3.)
 
-5. **Set the export key**: Pages project → *Settings* → *Environment variables* →
-   add `RSVP_EXPORT_KEY` (Production) = a long random string, e.g. from
-   `openssl rand -hex 24` or a password manager.
+5. **Set the export key**: Pages project → *Settings* → *Variables and
+   Secrets* → add `RSVP_EXPORT_KEY` as a **Secret** (Production) = a long
+   random string, e.g. from `openssl rand -hex 24` or a password manager.
 
 6. Redeploy (Pages → *Deployments* → *Retry* or push any commit).
 
