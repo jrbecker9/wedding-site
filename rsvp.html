@@ -39,6 +39,7 @@
     .choice{flex-direction:column;}
   }
   .field .optional{color:var(--muted-strong);letter-spacing:0.06em;}
+  .song-queue{font-size:12px;letter-spacing:0.02em;color:var(--muted-strong);font-style:italic;}
   .error-msg{font-size:13px;color:var(--copper-text);}
   /* Honeypot: invisible to people, irresistible to bots. */
   .hp{position:absolute;left:-9999px;top:-9999px;height:1px;width:1px;overflow:hidden;}
@@ -147,6 +148,7 @@
 
           <label class="field" for="rsvp-song">A SONG THAT GETS YOU ON THE DANCE FLOOR
             <input id="rsvp-song" name="song" type="text" placeholder="Optional, but taken seriously">
+            <span id="song-queue" class="song-queue is-hidden" aria-live="polite"></span>
           </label>
 
           <div class="hp" aria-hidden="true">
@@ -312,6 +314,19 @@
         submitBtn.textContent = "COUNT ME IN";
       });
   });
+
+  // Song-queue teaser: a live count of requests so far. Quiet if unreachable.
+  var queueEl = document.getElementById("song-queue");
+  fetch("/api/songs")
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      if (!data.ok || !queueEl) return;
+      queueEl.textContent = data.count >= 1
+        ? "Current queue: " + data.count + " song" + (data.count === 1 ? "" : "s") + " and counting."
+        : "The queue is empty. Be the first on the aux.";
+      queueEl.classList.remove("is-hidden");
+    })
+    .catch(function () { /* teaser stays hidden */ });
 
   btnReset.addEventListener("click", function () {
     nameInput.value = "";

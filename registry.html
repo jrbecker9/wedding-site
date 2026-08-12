@@ -23,14 +23,15 @@
   }
   .present-card .p-title{font-family:Lora,serif;font-size:24px;margin-bottom:10px;}
   .present-card .p-body{font-size:15px;line-height:1.65;color:var(--ink-soft);max-width:440px;margin:0 auto;}
-  .soon-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
   /* Not links yet — no hover affordance until they are. */
   .soon{
-    border:1px dashed rgba(163,196,188,0.5);border-radius:4px;padding:26px;text-align:center;color:var(--seaglass);
+    border:1px dashed rgba(163,196,188,0.5);border-radius:4px;padding:30px 26px;
+    text-align:center;color:var(--seaglass);
+    display:flex;flex-direction:column;align-items:center;gap:10px;
   }
   .soon .s-label{font-size:11px;letter-spacing:0.18em;}
-  .soon .s-slot{font-family:monospace;font-size:13px;margin-top:8px;}
-  @media (max-width:640px){ .soon-grid{grid-template-columns:1fr;} }
+  .soon .s-slot{font-family:monospace;font-size:13px;}
+  .soon .s-trail{width:200px;height:26px;opacity:0.9;}
 </style>
 </head>
 <body>
@@ -65,15 +66,14 @@
         <div class="p-title">Your presence is the present.</div>
         <div class="p-body">We haven't set up a registry yet. When we do, links will live right here. In the meantime, the best gift is an enthusiastic <a href="rsvp.html">RSVP</a> and a good restaurant recommendation.</div>
       </div>
-      <div class="soon-grid">
-        <div class="soon">
-          <div class="s-label">COMING SOON</div>
-          <div class="s-slot">[ registry link #1 ]</div>
-        </div>
-        <div class="soon">
-          <div class="s-label">COMING SOON</div>
-          <div class="s-slot">[ registry link #2 ]</div>
-        </div>
+      <div class="soon">
+        <div class="s-label">COMING SOON</div>
+        <div class="s-slot">[ registry link #1 ]</div>
+        <div class="s-slot">[ registry link #2 ]</div>
+        <svg class="s-trail" viewBox="0 0 220 26" aria-hidden="true">
+          <path d="M4 16 C34 8 52 22 84 15 C116 8 138 20 168 14 C182 11 190 12 197 13" fill="none" stroke="#d99a55" stroke-width="2.2" stroke-dasharray="0.4 6.5" stroke-linecap="round"></path>
+          <path d="M209 9.5 c-1.9-2.7 -5.6-1.5 -5.6 1.4 c0 2.3 3.1 4.6 5.6 6.2 c2.5-1.6 5.6-3.9 5.6-6.2 c0-2.9 -3.7-4.1 -5.6-1.4 z" fill="#d99a55"></path>
+        </svg>
       </div>
     </div>
   </div>
