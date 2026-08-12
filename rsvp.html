@@ -38,6 +38,7 @@
   @media (max-width:480px){
     .choice{flex-direction:column;}
   }
+  .field .optional{color:var(--muted-strong);letter-spacing:0.06em;}
   .error-msg{font-size:13px;color:var(--copper-text);}
   /* Honeypot: invisible to people, irresistible to bots. */
   .hp{position:absolute;left:-9999px;top:-9999px;height:1px;width:1px;overflow:hidden;}
@@ -124,6 +125,10 @@
             <input id="rsvp-name" name="name" type="text" placeholder="First and last" autocomplete="name">
           </label>
 
+          <label class="field" for="rsvp-email"><span>WHERE CAN WE REACH YOU? <span class="optional">(OPTIONAL)</span></span>
+            <input id="rsvp-email" name="email" type="email" placeholder="So the save-the-date can find you" autocomplete="email">
+          </label>
+
           <div>
             <div class="choice-label">WILL YOU JOIN US?</div>
             <div class="choice" role="group" aria-label="Will you join us?">
@@ -151,6 +156,7 @@
           </div>
 
           <div id="rsvp-error" class="error-msg is-hidden" role="alert">Please add your name so we know who's coming.</div>
+          <div id="rsvp-email-error" class="error-msg is-hidden" role="alert">That doesn't look like an email. Mind checking it?</div>
           <div id="rsvp-fail" class="error-msg is-hidden" role="alert">Hm, we couldn't reach the trailhead. Give it another try in a minute?</div>
 
           <button type="submit" class="submit-btn" id="rsvp-submit">COUNT ME IN</button>
@@ -206,6 +212,9 @@
   var form = document.getElementById("rsvp-form");
   var confirm = document.getElementById("rsvp-confirm");
   var nameInput = document.getElementById("rsvp-name");
+  var emailInput = document.getElementById("rsvp-email");
+  var emailErrorEl = document.getElementById("rsvp-email-error");
+  var EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
   var partyInput = document.getElementById("rsvp-party");
   var songInput = document.getElementById("rsvp-song");
   var errorEl = document.getElementById("rsvp-error");
@@ -245,6 +254,10 @@
     if (nameInput.value.trim()) errorEl.classList.add("is-hidden");
   });
 
+  emailInput.addEventListener("input", function () {
+    emailErrorEl.classList.add("is-hidden");
+  });
+
   var sending = false;
   form.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -253,6 +266,12 @@
     if (!name) {
       errorEl.classList.remove("is-hidden");
       nameInput.focus();
+      return;
+    }
+    var email = emailInput.value.trim();
+    if (email && !EMAIL_RE.test(email)) {
+      emailErrorEl.classList.remove("is-hidden");
+      emailInput.focus();
       return;
     }
     failEl.classList.add("is-hidden");
@@ -265,6 +284,7 @@
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: name,
+        email: email,
         attending: attending,
         party: parseInt(partyInput.value, 10) || 1,
         song: songInput.value.trim(),
@@ -295,10 +315,12 @@
 
   btnReset.addEventListener("click", function () {
     nameInput.value = "";
+    emailInput.value = "";
     partyInput.value = "2";
     songInput.value = "";
     setAttending("yes");
     errorEl.classList.add("is-hidden");
+    emailErrorEl.classList.add("is-hidden");
     confirm.classList.add("is-hidden");
     form.classList.remove("is-hidden");
     nameInput.focus();

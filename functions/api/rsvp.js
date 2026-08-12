@@ -1,7 +1,7 @@
 /**
  * POST /api/rsvp — store an early-interest RSVP in D1.
  *
- * Body (JSON): { name, attending: 'yes'|'no', party: 1..10, song?, website? }
+ * Body (JSON): { name, email?, attending: 'yes'|'no', party: 1..10, song?, website? }
  * `website` is a honeypot: humans never see the field, bots fill it in.
  * We answer bots with a cheerful fake success and store nothing.
  */
@@ -12,8 +12,11 @@ const CREATE_SQL = `CREATE TABLE IF NOT EXISTS rsvps (
   name       TEXT    NOT NULL,
   attending  TEXT    NOT NULL,
   party      INTEGER NOT NULL,
-  song       TEXT
+  song       TEXT,
+  email      TEXT
 )`;
+
+const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
 function bad(error, status = 400) {
   return Response.json({ ok: false, error }, { status });
@@ -33,12 +36,16 @@ export async function onRequestPost({ request, env }) {
   }
 
   const name = typeof body.name === "string" ? body.name.trim() : "";
+  const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
   const attending = body.attending === "no" ? "no" : body.attending === "yes" ? "yes" : null;
   const party = Number.parseInt(body.party, 10);
   const song = typeof body.song === "string" ? body.song.trim().slice(0, 200) : "";
 
   if (!name) return bad("Please add your name so we know who's coming.");
   if (name.length > 120) return bad("That's a very long name. 120 characters max.");
+  if (email && (email.length > 254 || !EMAIL_RE.test(email))) {
+    return bad("That doesn't look like an email. Mind checking it?");
+  }
   if (attending === null) return bad("Please pick an attendance option.");
   if (!Number.isInteger(party) || party < 1 || party > 10) {
     return bad("Party size should be between 1 and 10.");
@@ -46,9 +53,9 @@ export async function onRequestPost({ request, env }) {
 
   const insert = () =>
     env.DB.prepare(
-      "INSERT INTO rsvps (created_at, name, attending, party, song) VALUES (?, ?, ?, ?, ?)"
+      "INSERT INTO rsvps (created_at, name, attending, party, song, email) VALUES (?, ?, ?, ?, ?, ?)"
     )
-      .bind(new Date().toISOString(), name, attending, party, song)
+      .bind(new Date().toISOString(), name, attending, party, song, email)
       .run();
 
   try {
@@ -58,6 +65,10 @@ export async function onRequestPost({ request, env }) {
       // First RSVP ever: create the table, then retry once.
       if (String(e).includes("no such table")) {
         await env.DB.exec(CREATE_SQL.replace(/\n\s*/g, " "));
+        await insert();
+      } else if (/no column named email|has no column/i.test(String(e))) {
+        // Table predates the email field: add the column, then retry once.
+        await env.DB.exec("ALTER TABLE rsvps ADD COLUMN email TEXT");
         await insert();
       } else {
         throw e;

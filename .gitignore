@@ -3,6 +3,7 @@
 
 # Local secrets for wrangler pages dev — never commit
 .dev.vars
+Key.txt
 
 # Node
 node_modules/

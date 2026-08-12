@@ -30,22 +30,36 @@ export async function onRequestGet({ request, env }) {
   let rows;
   try {
     const result = await env.DB.prepare(
-      "SELECT id, created_at, name, attending, party, song FROM rsvps ORDER BY created_at"
+      "SELECT id, created_at, name, email, attending, party, song FROM rsvps ORDER BY created_at"
     ).all();
     rows = result.results || [];
   } catch (e) {
     if (String(e).includes("no such table")) {
       rows = []; // nobody has RSVP'd yet
+    } else if (/no column named email|no such column: email/i.test(String(e))) {
+      // Table predates the email field (no one has RSVP'd with one yet).
+      const result = await env.DB.prepare(
+        "SELECT id, created_at, name, attending, party, song FROM rsvps ORDER BY created_at"
+      ).all();
+      rows = result.results || [];
     } else {
       console.error("rsvps export failed:", e);
       return Response.json({ ok: false, error: "Query failed." }, { status: 500 });
     }
   }
 
+  // The form's second button is "Depends on the date", not a decline —
+  // make the export say what the stored value means.
+  rows = rows.map((r) => ({
+    ...r,
+    email: r.email || "",
+    attending: r.attending === "no" ? "depends-on-date" : r.attending,
+  }));
+
   if (url.searchParams.get("format") === "csv") {
-    const header = "id,created_at,name,attending,party,song";
+    const header = "id,created_at,name,email,attending,party,song";
     const lines = rows.map((r) =>
-      [r.id, r.created_at, r.name, r.attending, r.party, r.song].map(csvField).join(",")
+      [r.id, r.created_at, r.name, r.email, r.attending, r.party, r.song].map(csvField).join(",")
     );
     return new Response([header, ...lines].join("\r\n") + "\r\n", {
       headers: {

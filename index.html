@@ -54,6 +54,7 @@ document.documentElement.classList.add('js');
   .hero-date .d-main{font-family:Lora,serif;font-size:26px;}
   .hero-date .d-main .tbd{font-style:italic;color:var(--copper-text);}
   .hero-date .d-note{font-size:13px;color:var(--muted-strong);margin-top:4px;}
+  .hero-date .d-note .day-n{color:var(--copper-text);font-weight:700;font-variant-numeric:tabular-nums;}
 
   @keyframes badge-float{
     0%,100%{transform:rotate(-7deg) translateY(0);}
@@ -182,7 +183,7 @@ document.documentElement.classList.add('js');
         </div>
         <div class="hero-date">
           <div class="d-main">Date &amp; venue: <span class="tbd">TBD</span></div>
-          <div class="d-note">We're still deciding on the where and when. Check back soon.</div>
+          <div class="d-note" id="engaged-note">We're still deciding on the where and when. Check back soon.</div>
         </div>
       </div>
     </header>
@@ -267,6 +268,49 @@ document.documentElement.classList.add('js');
   if (p && p.catch) p.catch(dismiss);                      // autoplay blocked
   setTimeout(function () { if (video.currentTime === 0) dismiss(); }, 3000); // never started
   setTimeout(dismiss, 12000);                              // absolute failsafe
+})();
+</script>
+<script>
+/* "Day N of being engaged" — counts from the proposal, Sep 6 2025 (day 1).
+   The static sentence in the HTML stays as the no-JS fallback. The number
+   ticks up when the hero settles; reduced-motion users get it instantly. */
+(function () {
+  "use strict";
+  var note = document.getElementById("engaged-note");
+  if (!note) return;
+  var MS_DAY = 86400000;
+  var start = new Date(2025, 8, 6);           // Sep 6 2025, local midnight
+  var now = new Date();
+  var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  var n = Math.floor((today - start) / MS_DAY) + 1;
+  if (n < 1) return;                          // clock set before the proposal: keep fallback
+
+  note.innerHTML = 'Day <span class="day-n"></span> of being engaged. ' +
+                   "Still deciding on the where and when.";
+  var numEl = note.querySelector(".day-n");
+  numEl.textContent = n;
+
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce || n < 30) return;
+
+  // Tick the last stretch of days once the hero has risen into place.
+  var meta = document.querySelector(".hero-meta");
+  var ticked = false;
+  function tick() {
+    if (ticked) return;
+    ticked = true;
+    var from = n - 30, t0 = null, DUR = 900;
+    function step(ts) {
+      if (t0 === null) t0 = ts;
+      var p = Math.min(1, (ts - t0) / DUR);
+      p = 1 - Math.pow(1 - p, 3);             // ease-out
+      numEl.textContent = Math.round(from + (n - from) * p);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  if (meta) meta.addEventListener("animationend", tick, { once: true });
+  setTimeout(tick, 14000);                    // fallback: splash worst-case + rise
 })();
 </script>
 <script>

@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS rsvps (
   name       TEXT    NOT NULL,
   attending  TEXT    NOT NULL,   -- 'yes' (wouldn't miss it) | 'no' (depends on the date)
   party      INTEGER NOT NULL,   -- 1..10
-  song       TEXT                -- optional dance-floor request
+  song       TEXT,               -- optional dance-floor request
+  email      TEXT                -- optional contact (API lazily ALTERs older tables)
 );
 
 -- Email updates list (footer signup). Also auto-created by the API on first use.
