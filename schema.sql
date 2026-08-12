@@ -11,6 +11,12 @@ CREATE TABLE IF NOT EXISTS rsvps (
   email      TEXT                -- optional contact (API lazily ALTERs older tables)
 );
 
+-- Shared "boop the nose" counter for the Dogs page. Auto-created on first boop.
+CREATE TABLE IF NOT EXISTS boops (
+  dog   TEXT    PRIMARY KEY,     -- 'ella' | 'lily'
+  count INTEGER NOT NULL
+);
+
 -- Email updates list (footer signup). Also auto-created by the API on first use.
 -- email is UNIQUE so repeat signups are idempotent (INSERT OR IGNORE).
 CREATE TABLE IF NOT EXISTS subscribers (

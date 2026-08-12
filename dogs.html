@@ -23,13 +23,51 @@
     transition:transform .3s ease, box-shadow .3s ease;
   }
   .dog-card:hover{transform:translateY(-5px);box-shadow:0 18px 40px rgba(20,30,35,0.42);}
-  .dog-photo{width:100%;aspect-ratio:4/3;overflow:hidden;}
-  .dog-photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease;}
+  /* The photo is a button: tap = boop. A real <button> for keyboard users. */
+  .dog-photo{
+    width:100%;aspect-ratio:4/3;overflow:hidden;position:relative;display:block;
+    padding:0;border:none;background:none;cursor:pointer;
+  }
+  .dog-photo img{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
+    transition:transform .6s ease, opacity .45s ease;
+  }
   .dog-card:hover .dog-photo img{transform:scale(1.05);}
+  .dog-photo .alt{opacity:0;}
+  /* Second photo fades in on hover — pointers that can hover only, so touch
+     taps stay reserved for booping. */
+  @media (hover:hover) and (pointer:fine){
+    .dog-card:hover .dog-photo .alt{opacity:1;}
+  }
+  /* Boop burst hearts */
+  .boop-heart{
+    position:absolute;width:22px;height:22px;pointer-events:none;
+    transform:translate(-50%,-50%);
+    animation:heart-float .7s ease-out forwards;
+  }
+  @keyframes heart-float{
+    from{opacity:1;transform:translate(-50%,-50%) scale(.5);}
+    to{opacity:0;transform:translate(-50%,-160%) scale(1.25) rotate(-10deg);}
+  }
   .dog-info{padding:26px;}
   .dog-role{font-size:11px;letter-spacing:0.18em;color:var(--copper-text);}
   .dog-name{font-family:Lora,serif;font-size:26px;margin:8px 0 8px;}
+  .boop-count{font-size:13px;color:var(--muted-strong);margin-bottom:10px;}
+  .boop-count b{color:var(--copper-text);font-variant-numeric:tabular-nums;}
+  .boop-count.is-hidden{display:none;}
   .dog-bio{font-size:15px;line-height:1.65;color:var(--ink-soft);}
+
+  /* Field notes: tiny stat meters in the dashed-trail motif */
+  .dog-stats{display:flex;flex-direction:column;gap:12px;margin-top:18px;}
+  .stat-top{
+    display:flex;justify-content:space-between;gap:12px;
+    font-size:11px;letter-spacing:0.14em;color:var(--muted-strong);
+  }
+  .stat-top .stat-val{color:var(--copper-text);font-weight:700;letter-spacing:0.06em;}
+  .stat-bar{display:block;width:100%;height:8px;margin-top:5px;}
+  .stat-bar line{stroke-width:2.2;stroke-linecap:round;stroke-dasharray:0.4 6.5;vector-effect:non-scaling-stroke;}
+  .stat-bar .bg{stroke:var(--line);}
+  .stat-bar .fg{stroke:var(--copper);}
   @media (max-width:640px){ .dog-grid{grid-template-columns:1fr;} }
 </style>
 </head>
@@ -62,23 +100,55 @@
   <div class="dark" style="padding:40px 24px 80px;flex:1;">
     <div class="wrap wrap-900 dog-grid reveal-stagger">
       <div class="dog-card">
-        <div class="dog-photo">
+        <button class="dog-photo" type="button" data-dog="ella" aria-label="Boop Ella's nose">
           <img src="img/dog-ella.jpg" alt="Ella at golden hour" width="1600" height="1200" loading="lazy">
-        </div>
+          <img class="alt" src="img/dog-ella-2.jpg" alt="" width="1600" height="1200" loading="lazy" aria-hidden="true">
+        </button>
         <div class="dog-info">
           <div class="dog-role">FLOWER GIRL (SELF-APPOINTED)</div>
           <div class="dog-name">Ella</div>
+          <div class="boop-count is-hidden">Booped <b data-count="ella">0</b> times &middot; tap her photo to boop</div>
           <div class="dog-bio">German Shepherd. Absolutely obsessed with fetch: sticks only, balls need not apply. Also handles backyard perimeter checks and posing at golden hour like it's a job. Approves of the engagement, mostly because it means more fetch.</div>
+          <div class="dog-stats" aria-label="Ella's field notes">
+            <div class="stat">
+              <div class="stat-top"><span>FETCH OBSESSION</span><span class="stat-val">10/10</span></div>
+              <svg class="stat-bar" viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><line class="bg" x1="2" y1="4" x2="98" y2="4"></line><line class="fg" x1="2" y1="4" x2="98" y2="4"></line></svg>
+            </div>
+            <div class="stat">
+              <div class="stat-top"><span>STICK STANDARDS</span><span class="stat-val">EXACTING</span></div>
+              <svg class="stat-bar" viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><line class="bg" x1="2" y1="4" x2="98" y2="4"></line><line class="fg" x1="2" y1="4" x2="88" y2="4"></line></svg>
+            </div>
+            <div class="stat">
+              <div class="stat-top"><span>GOLDEN HOUR POSING</span><span class="stat-val">PROFESSIONAL</span></div>
+              <svg class="stat-bar" viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><line class="bg" x1="2" y1="4" x2="98" y2="4"></line><line class="fg" x1="2" y1="4" x2="82" y2="4"></line></svg>
+            </div>
+          </div>
         </div>
       </div>
       <div class="dog-card">
-        <div class="dog-photo">
+        <button class="dog-photo" type="button" data-dog="lily" aria-label="Boop Lily's nose">
           <img src="img/dog-lily.jpg" alt="Lily posing in the grass" width="1600" height="2133" loading="lazy">
-        </div>
+          <img class="alt" src="img/dog-lily-2.jpg" alt="" width="1600" height="1200" loading="lazy" aria-hidden="true">
+        </button>
         <div class="dog-info">
           <div class="dog-role">RING SECURITY</div>
           <div class="dog-name">Lily</div>
+          <div class="boop-count is-hidden">Booped <b data-count="lily">0</b> times &middot; tap her photo to boop</div>
           <div class="dog-bio">The mix. Master of the head tilt and the soulful stare, specializes in supervising backyard stick negotiations. Attendance at the wedding: under review, outlook strong.</div>
+          <div class="dog-stats" aria-label="Lily's field notes">
+            <div class="stat">
+              <div class="stat-top"><span>HEAD TILT</span><span class="stat-val">MASTERED</span></div>
+              <svg class="stat-bar" viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><line class="bg" x1="2" y1="4" x2="98" y2="4"></line><line class="fg" x1="2" y1="4" x2="92" y2="4"></line></svg>
+            </div>
+            <div class="stat">
+              <div class="stat-top"><span>SOULFUL STARE</span><span class="stat-val">10/10</span></div>
+              <svg class="stat-bar" viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><line class="bg" x1="2" y1="4" x2="98" y2="4"></line><line class="fg" x1="2" y1="4" x2="98" y2="4"></line></svg>
+            </div>
+            <div class="stat">
+              <div class="stat-top"><span>RING SECURITY CLEARANCE</span><span class="stat-val">PENDING</span></div>
+              <svg class="stat-bar" viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><line class="bg" x1="2" y1="4" x2="98" y2="4"></line><line class="fg" x1="2" y1="4" x2="32" y2="4"></line></svg>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -113,5 +183,76 @@
 
 </div>
 <script src="script.js"></script>
+<script>
+/* Boop the nose. Every tap anywhere on a dog's photo bursts a little heart
+   and adds one to that dog's shared, all-visitors boop count. If the API is
+   unreachable the count line stays hidden and boops still burst. */
+(function () {
+  "use strict";
+  var reduce = window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var countEls = {};
+  Array.prototype.slice.call(document.querySelectorAll("[data-count]")).forEach(function (el) {
+    countEls[el.getAttribute("data-count")] = el;
+  });
+
+  function showCount(dog, n) {
+    var el = countEls[dog];
+    if (!el) return;
+    el.textContent = n;
+    el.closest(".boop-count").classList.remove("is-hidden");
+  }
+
+  fetch("/api/boop")
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      if (!data.ok) return;
+      Object.keys(data.counts).forEach(function (dog) { showCount(dog, data.counts[dog]); });
+    })
+    .catch(function () { /* counts stay hidden */ });
+
+  function burst(btn, x, y) {
+    if (reduce) return;
+    var heart = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    heart.setAttribute("viewBox", "0 0 24 24");
+    heart.setAttribute("class", "boop-heart");
+    heart.style.left = x + "px";
+    heart.style.top = y + "px";
+    heart.innerHTML = '<path d="M12 7.2 c-2.2-3.2-6.6-1.8-6.6 1.6 c0 2.7 3.7 5.4 6.6 7.4 c2.9-2 6.6-4.7 6.6-7.4 c0-3.4-4.4-4.8-6.6-1.6 z" fill="#d99a55"></path>';
+    btn.appendChild(heart);
+    setTimeout(function () { heart.remove(); }, 750);
+  }
+
+  var lastBoop = 0;
+  Array.prototype.slice.call(document.querySelectorAll(".dog-photo[data-dog]")).forEach(function (btn) {
+    var dog = btn.getAttribute("data-dog");
+    btn.addEventListener("click", function (e) {
+      var rect = btn.getBoundingClientRect();
+      // Keyboard "clicks" land at (0,0): burst from the middle instead.
+      var x = e.clientX ? e.clientX - rect.left : rect.width / 2;
+      var y = e.clientY ? e.clientY - rect.top : rect.height / 2;
+      burst(btn, x, y);
+
+      var now = Date.now();
+      if (now - lastBoop < 300) return;   // burst freely, count politely
+      lastBoop = now;
+
+      var el = countEls[dog];
+      if (el && !el.closest(".boop-count").classList.contains("is-hidden")) {
+        el.textContent = parseInt(el.textContent, 10) + 1;   // optimistic
+      }
+      fetch("/api/boop", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ dog: dog })
+      })
+        .then(function (res) { return res.json(); })
+        .then(function (data) { if (data.ok) showCount(dog, data.count); })
+        .catch(function () { /* the heart already flew; good enough */ });
+    });
+  });
+})();
+</script>
 </body>
 </html>
